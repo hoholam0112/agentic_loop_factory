@@ -11,8 +11,9 @@ deleting anything this loop did not create. Commit deletions separately.
 
 ## 2. LLM wiki update
 
-1. Compute the change scope: `git diff --name-only <loop-start>..HEAD` plus
-   changes to human-authored docs.
+1. Compute the change scope:
+   `git diff --name-only <state.json.start_commit>..HEAD` plus changes to
+   human-authored docs.
 2. Dispatch one updater subagent per `docs/wiki/` subdirectory in parallel
    (Agent tool, `general-purpose` type) with the updater prompt below.
    Updaters write directly — directories are disjoint, so no conflicts.

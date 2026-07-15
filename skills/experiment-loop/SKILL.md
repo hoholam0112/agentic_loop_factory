@@ -19,7 +19,8 @@ live in `references/` and are loaded only when entering a stage.
 3. If state exists, summarize `loop_id`, `stage`, `status`, `current_task`,
    plus any `pending_decisions` and running `jobs`. Offer:
    (a) continue from the recorded point, (b) start a new loop,
-   (c) re-enter a specific stage.
+   (c) re-enter a specific stage. If the latest loop's `status` is `done`,
+   the natural default is (b).
 4. Load the reference for the chosen stage and proceed.
 
 ## Stages
@@ -48,9 +49,9 @@ requirement doesn't fit one loop; if unsure, ask the user.
   the task needs.
 - **What/why over how.** Each stage defines purpose, deliverables, and
   completion criteria. Choose the implementation approach yourself.
-- **Escalation.** Stop the loop, record the question in
-  `state.json.pending_decisions`, describe the situation to the user, and
-  present 2-3 options.
+- **Escalation.** Stop the loop, set `status: "escalated"`, record the
+  question in `state.json.pending_decisions`, describe the situation to the
+  user, and present 2-3 options.
 - **Verification gates** run in subagents per
   `references/verification-gate.md`.
 - **Language.** All docs and code in English. `docs/glossary.md` may contain
@@ -84,6 +85,7 @@ and job start.
   "loop_id": "003-lora-rank-sweep",
   "stage": 3,
   "status": "in_progress",
+  "start_commit": "a1b2c3d",
   "current_task": "eval harness (task 4/6)",
   "artifacts": {"experiment_design": "docs/loops/003-lora-rank-sweep/experiment-design.md"},
   "jobs": [{"command": "python train.py ...", "pid": 12345, "log": "docs/loops/003-lora-rank-sweep/logs/train.log", "outputs": "runs/003/"}],

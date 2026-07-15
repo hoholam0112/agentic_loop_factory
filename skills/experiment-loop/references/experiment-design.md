@@ -6,7 +6,9 @@ that tech design can start.
 ## Deliverables
 
 - New loop directory `docs/loops/<loop-id>/` (`loop-id` = next zero-padded
-  sequence + slug) with `state.json` initialized: stage 1, `in_progress`.
+  sequence + slug) with `state.json` initialized: stage 1, `in_progress`,
+  `start_commit` set to the current commit hash (used by wrap-up's
+  change-scope diff).
 - `experiment-design.md` in the loop directory, from
   `templates/experiment-design-doc.md`: problem definition / data /
   hypothesis / search space / evaluation method / acceptance criteria /

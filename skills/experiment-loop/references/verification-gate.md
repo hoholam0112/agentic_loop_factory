@@ -1,8 +1,8 @@
 # Verification Gate (shared)
 
 Verify a stage's artifacts with a subagent before moving on. Used by stages
-1, 2, 3 (per plan checkpoints), 4 (report), and 5 (wiki, which has its own
-prompts in wrap-up.md but follows this protocol).
+1, 2, 3 (per plan checkpoints), and 4 (report). Stage 5 (wiki) uses its own
+prompts and flow, defined in wrap-up.md.
 
 ## Protocol
 

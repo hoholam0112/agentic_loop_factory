@@ -20,5 +20,9 @@ goals.
 3. Maintain the document at every loop's wrap-up: mark finished goals done,
    adjust the remainder.
 
+While working in stage 0.5, set the current loop's `state.json.stage` to
+`0.5` (and back to `1` on return), consistent with the update-on-every-
+transition rule.
+
 **Done when:** user approves the plan. Return to stage 1 with the first
 unfinished goal as this loop's scope.

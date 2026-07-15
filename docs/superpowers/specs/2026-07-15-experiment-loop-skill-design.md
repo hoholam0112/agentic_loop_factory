@@ -98,6 +98,8 @@ Located at `docs/loops/<loop-id>/state.json`. Goal: the minimum needed for
 
 - `loop_id`
 - `stage` (0, 0.5, 1–5)
+- `start_commit`: the commit the loop started from, recorded at stage 1,
+  used by wrap-up's change-scope diff
 - `status`: `in_progress` | `awaiting_user_review` | `escalated` | `done`
 - `current_task`: short description of what is underway
 - `artifacts`: paths of stage deliverables produced so far
