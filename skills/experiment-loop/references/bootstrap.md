@@ -26,9 +26,11 @@ loop can run on it.
    docs.
 2. Propose the layout adaptation to the user (what moves where, what gets
    created). Get agreement before moving any files.
-3. Restructure. Classify existing docs on two axes: human-authored vs
-   agent-generated, loop-scoped vs project-persistent. Write `glossary.md`
-   and `index.md`.
+3. Restructure. Classify existing docs on three axes: management subject
+   (human-authored vs agent-generated), usage period (loop-scoped vs
+   project-persistent), and topic. Group persistent wiki docs by topic into
+   `docs/wiki/` subdirectories so later stages can update them in parallel.
+   Write `glossary.md` and `index.md`.
 4. Ensure the PRD exists.
 
 **Done when:** layout exists, `index.md` reflects it, PRD present, and the
