@@ -1,0 +1,31 @@
+# Stage 3: Implementation
+
+**Purpose:** implement the plan's tasks so the experiment can run.
+
+## Method: TDD, task by task, in plan order
+
+For each task in `implementation-plan.md`:
+
+1. Write a failing test that captures the task's done-condition. Run it and
+   confirm it fails for the expected reason.
+2. Write the minimal implementation to make it pass. Run the test; confirm
+   it passes.
+3. Refactor if needed; keep the whole suite green.
+4. Commit, referencing the task.
+5. Update `state.json.current_task`.
+
+Run tests in the main session — the TDD cycle needs immediate feedback. Do
+not delegate the cycle to subagents.
+
+## Verification gate
+
+Run the gate (references/verification-gate.md) at each checkpoint the
+implementation plan marks — at minimum once after all tasks. Criteria:
+
+- the code matches the Tech Design Spec;
+- tests actually verify the acceptance criteria rather than restating the
+  implementation;
+- no unexplained deviations from the plan.
+
+**Done when:** all tasks complete, the full test suite passes, and the gate
+passed. Set state to stage 4.
