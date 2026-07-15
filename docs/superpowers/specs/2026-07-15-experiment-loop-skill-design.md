@@ -108,14 +108,41 @@ Located at `docs/loops/<loop-id>/state.json`. Goal: the minimum needed for
 Updated at every stage transition, escalation, and job start. The agent may
 extend fields as needed; these are the required minimum.
 
+## Subagent Invocation Model
+
+The skill is self-contained, so all subagents use the built-in Agent tool with
+the `general-purpose` type — no custom agent definitions to deploy. Each
+subagent role has a **prompt template inside the relevant reference file**
+(`verification-gate.md`, `wrap-up.md`); the main session fills placeholders
+(artifact paths, stage criteria, changed-file lists) and dispatches.
+
+Shared rules:
+
+- Pass **file paths, not content**. Subagents read code themselves, enforcing
+  code grounding.
+- Subagents return a **structured issue list**: severity, `file:line`,
+  rationale, and a flag for decision-type issues. The main session classifies,
+  fixes, or escalates based on it.
+- Reviewer subagents **report only, never modify**. Fixes happen in the main
+  session — loop control and fix context stay in the main session; the bulk
+  file-reading of review is isolated in the subagent. Exception: wiki-update
+  subagents write docs directly (see Wrap-up), since directories are disjoint
+  and parallelism pays off.
+- Re-verification after fixes dispatches a **fresh subagent** to avoid
+  anchoring on the previous review.
+
+Tests are the counter-case: test **execution** happens in the main session via
+Bash (the TDD cycle needs immediate feedback), while a gate subagent reviews
+**test quality** — acceptance-criteria coverage and whether tests actually
+verify behavior.
+
 ## Verification Gate (references/verification-gate.md)
 
 Used at the gates marked in the workflow (stages 1, 2, 3; report verification
 in 4; wiki verification in 5).
 
-1. Dispatch a general-purpose subagent with the artifact path(s) and the
-   stage's verification criteria. The subagent reads code directly (code
-   grounding) and returns issues.
+1. Dispatch a reviewer subagent (per the invocation model above) with the
+   artifact path(s) and the stage's verification criteria.
 2. Classify issues **Critical / Major / Minor** by **impact on experiment
    validity and reproducibility**.
 3. Fix issues immediately. Up to 3 automatic fix-and-reverify rounds.
@@ -178,8 +205,15 @@ keeps procedure prescriptions minimal — the agent decides the how.
 
 ### 5. Wrap-up (`wrap-up.md`)
 - Garbage collection: remove code/docs made obsolete by this loop.
-- LLM wiki update: subagents update and verify per doc-directory in parallel,
-  claim-by-claim against code and human-source changes.
+- LLM wiki update:
+  1. Main session computes this loop's change scope (git diff since loop
+     start + human-source doc changes).
+  2. One updater subagent per wiki doc-directory, dispatched in parallel,
+     each given its directory and the changed-file list. Updaters check
+     existing claims against code, fix stale claims, add new ones, and cite
+     sources per claim. They write docs directly (disjoint directories).
+  3. One verifier subagent per directory afterwards, re-checking modified
+     claims against code; the main session handles only failed claims.
 - Tools & hooks review: add only frequently-needed items; avoid overbuilding.
 - Write `handoff_notes`, set status `done`.
 - **Done when:** GC done, wiki verified, state closed.
