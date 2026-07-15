@@ -8,13 +8,18 @@
 - Run long jobs (anything that could outlive the session) in the background:
 
   ```
+  mkdir -p docs/loops/<loop-id>/logs
   nohup <command> > docs/loops/<loop-id>/logs/<job>.log 2>&1 &
   ```
 
   Record in `state.json.jobs`: command, PID, log path, expected outputs.
-- While a job runs, poll its log periodically. On session resume, check
-  whether the PID is alive; if not, decide from the log whether it finished
-  or failed, then continue or rerun.
+- While a job runs, poll its log periodically. If the PID is alive but the
+  log shows no progress for ~30 minutes, treat the job as stalled and
+  escalate. On session resume, check whether the PID is alive and still
+  matches the recorded command (PIDs get reused); if not, decide from the
+  log whether it finished or failed, then continue or rerun.
+- Rerun a failed job at most once. If it fails again, escalate instead of
+  retrying.
 - Record enough to reproduce every run: commit hash, configs, seeds, data
   versions. Keep the run config alongside its outputs.
 

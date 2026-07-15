@@ -14,7 +14,9 @@ prompts and flow, defined in wrap-up.md.
      SKILL.md), regardless of severity or round count.
    - Defects: fix them in the main session immediately.
 3. Re-verify with a FRESH subagent (never reuse the previous reviewer — avoid
-   anchoring). At most 3 fix-and-reverify rounds.
+   anchoring). At most 3 fix-and-reverify rounds. Record the current round
+   in `state.json` (e.g. `gate_round`) so the cap survives interruption;
+   clear it when the gate exits.
 4. Exit:
    - Only Minor issues remain → pass; note remaining Minors and proceed.
    - Major or Critical remains after 3 rounds → escalate.

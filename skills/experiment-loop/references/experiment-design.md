@@ -22,7 +22,9 @@ that tech design can start.
    problem (web search). Capture findings with sources.
 3. Propose 2-3 candidate directions for this loop with trade-offs and a
    recommendation. Always include a free-form option for the user's own
-   idea. If the chosen direction doesn't fit one loop, enter stage 0.5.
+   idea. If the chosen direction doesn't fit one loop, enter stage 0.5 —
+   at most once per loop; if the scope still doesn't fit after 0.5,
+   escalate instead of re-entering.
 4. Write the design doc. For every open decision, present the user 2-3
    alternatives or ask directly.
 5. Verification gate (references/verification-gate.md). Criteria:

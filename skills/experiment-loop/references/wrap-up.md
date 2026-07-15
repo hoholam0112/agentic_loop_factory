@@ -18,7 +18,9 @@ deleting anything this loop did not create. Commit deletions separately.
    (Agent tool, `general-purpose` type) with the updater prompt below.
    Updaters write directly — directories are disjoint, so no conflicts.
 3. Dispatch one verifier subagent per updated directory with the verifier
-   prompt below. The main session fixes only failed claims.
+   prompt below. The main session fixes only failed claims, then re-verifies
+   the fixed claims once with a fresh verifier. If a claim still fails,
+   delete it and note it in `handoff_notes` — do not loop further.
 4. Update `docs/index.md` and `docs/glossary.md` if structure or terminology
    changed.
 

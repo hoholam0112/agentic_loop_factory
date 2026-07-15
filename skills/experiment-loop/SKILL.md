@@ -43,6 +43,9 @@ requirement doesn't fit one loop; if unsure, ask the user.
 - **Code grounding.** Docs are for fast context only. Read the actual code
   before judging, implementing, or verifying. When docs and code disagree,
   trust the code.
+- **Claim-level sourcing.** Every claim in an agent-authored document cites
+  its source file (and line where useful). Applies to all stages — design
+  docs, specs, plans, reports, and wiki alike.
 - **Progressive context loading.** Don't load everything up front. On user
   input: read `docs/glossary.md` and align terminology (ask when a user's
   term is ambiguous), then read `docs/index.md` and open only the documents
@@ -71,6 +74,10 @@ docs/
   wiki/               # agent-generated, project-persistent
   loops/<loop-id>/    # loop-scoped: design doc, spec, plan, report, state.json
 ```
+
+The **LLM wiki** (`docs/wiki/`) exists to keep project context current and
+easy for agents to search and reuse across loops. It is maintained at each
+loop's wrap-up (see `references/wrap-up.md`).
 
 `loop-id` = zero-padded sequence + slug, e.g. `003-lora-rank-sweep`.
 

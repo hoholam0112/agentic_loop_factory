@@ -30,8 +30,10 @@ loop can run on it.
    (human-authored vs agent-generated), usage period (loop-scoped vs
    project-persistent), and topic. Group persistent wiki docs by topic into
    `docs/wiki/` subdirectories so later stages can update them in parallel.
-   Write `glossary.md` and `index.md`.
-4. Ensure the PRD exists.
+   Write `glossary.md`.
+4. Ensure the PRD exists. Then write `index.md` last — its presence is how
+   the dashboard detects a completed onboarding, so it must not exist before
+   everything else is in place.
 
 **Done when:** layout exists, `index.md` reflects it, PRD present, and the
 user confirms. Then start the first loop (stage 1).
