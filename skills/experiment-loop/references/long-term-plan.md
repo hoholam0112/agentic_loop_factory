@@ -8,7 +8,7 @@ goals.
 
 ## Deliverables
 
-- `docs/wiki/long-term-plan.md` (project-persistent): an ordered list of
+- `docs/agent/knowledge/long-term-plan.md` (project-persistent): an ordered list of
   loop-sized goals, each with — goal, why it needs its own loop,
   dependencies, rough success criterion. Mark which goal the next loop
   takes.

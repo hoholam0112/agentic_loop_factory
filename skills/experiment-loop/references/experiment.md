@@ -8,8 +8,8 @@
 - Run long jobs (anything that could outlive the session) in the background:
 
   ```
-  mkdir -p docs/loops/<loop-id>/logs
-  nohup <command> > docs/loops/<loop-id>/logs/<job>.log 2>&1 &
+  mkdir -p docs/agent/loops/<loop-id>/logs
+  nohup <command> > docs/agent/loops/<loop-id>/logs/<job>.log 2>&1 &
   ```
 
   Record in `state.json.jobs`: command, PID, log path, expected outputs.
@@ -32,8 +32,8 @@
    - every number in the report traces to an output file;
    - each acceptance criterion is explicitly evaluated pass/fail;
    - limitations are noted.
-3. Render a self-contained HTML version next to the markdown for
-   readability.
+3. Render a self-contained HTML version into `docs/shared/` for the user,
+   following `references/experiment-report-html.md`.
 4. Request user review (`status: awaiting_user_review`).
 
 **Done when:** user has reviewed the report. Set state to stage 5.

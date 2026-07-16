@@ -15,7 +15,9 @@ loop can run on it.
 - `docs/index.md` — what every document is for and when an agent should read
   it, including the layout decisions made here. Later stages navigate by
   this file.
-- A PRD in `docs/human/`. If none exists, guide the user through writing one
+- `docs/CONVENTIONS.md` — the wiki's rules: document authority (human `raw/`
+  is top authority), priority when sources disagree, and the frontmatter spec.
+- A PRD in `docs/human/raw/`. If none exists, guide the user through writing one
   using `templates/prd.md`: interview them section by section — the user
   authors the content, you scribe.
 
@@ -27,10 +29,12 @@ loop can run on it.
 2. Propose the layout adaptation to the user (what moves where, what gets
    created). Get agreement before moving any files.
 3. Restructure. Classify existing docs on three axes: management subject
-   (human-authored vs agent-generated), usage period (loop-scoped vs
-   project-persistent), and topic. Group persistent wiki docs by topic into
-   `docs/wiki/` subdirectories so later stages can update them in parallel.
-   Write `glossary.md`.
+   (human-authored `human/raw/` vs agent-generated `agent/`), usage period
+   (loop-scoped `agent/loops/` vs project-persistent `agent/knowledge/`, with
+   decision records in `agent/decisions/`), and topic. Human-view outputs go
+   in `shared/`. Group persistent wiki docs by topic into
+   `docs/agent/knowledge/` subdirectories so later stages can update them in
+   parallel. Write `glossary.md` and `CONVENTIONS.md`.
 4. Ensure the PRD exists. Then write `index.md` last — its presence is how
    the dashboard detects a completed onboarding, so it must not exist before
    everything else is in place.
