@@ -9,6 +9,8 @@ user. Output goes to `docs/shared/`.
   undergraduate should be able to read and understand it without effort.
 - Design like a senior frontend engineer: use HTML, CSS, and JavaScript to
   make a clean, refined report.
+- Use charts where they help: pick graphs that make the results intuitive and
+  easy to grasp at a glance.
 - The final result is a single self-contained HTML file. It must open directly
   in a browser with no install step (inline all CSS/JS; embed assets).
 - Make five separate tabs: Overview, Data, Model, Experiment History, Error

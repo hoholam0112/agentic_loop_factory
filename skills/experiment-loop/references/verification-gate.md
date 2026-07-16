@@ -20,6 +20,10 @@ prompts and flow, defined in wrap-up.md.
 4. Exit:
    - Only Minor issues remain → pass; note remaining Minors and proceed.
    - Major or Critical remains after 3 rounds → escalate.
+5. After the gate passes, summarize to the user what this stage produced —
+   in plain Korean an undergraduate can follow, jargon only when necessary
+   (see SKILL.md "Plain language"). Cover what was done, what the gate found
+   and how it was resolved, and any remaining Minors, before moving on.
 
 ## Rules
 

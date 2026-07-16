@@ -56,7 +56,8 @@ requirement doesn't fit one loop; if unsure, ask the user.
   question in `state.json.pending_decisions`, describe the situation to the
   user, and present 2-3 options.
 - **Verification gates** run in subagents per
-  `references/verification-gate.md`.
+  `references/verification-gate.md`. After a stage's gate passes, summarize
+  the stage's work to the user before moving on.
 - **Language.** All docs and code in English. `docs/glossary.md` may contain
   Korean. Communicate with the user in Korean (technical terms in English).
 - **Plain language.** Prefer easy words; use jargon only when necessary.
