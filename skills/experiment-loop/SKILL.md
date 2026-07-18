@@ -50,8 +50,6 @@ requirement doesn't fit one loop; if unsure, ask the user.
   input: read `docs/glossary.md` and align terminology (ask when a user's
   term is ambiguous), then read `docs/index.md` and open only the documents
   the task needs.
-- **What/why over how.** Each stage defines purpose, deliverables, and
-  completion criteria. Choose the implementation approach yourself.
 - **Escalation.** Stop the loop, set `status: "escalated"`, record the
   question in `state.json.pending_decisions`, describe the situation to the
   user, and present 2-3 options.
