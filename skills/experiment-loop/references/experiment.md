@@ -32,6 +32,19 @@
    - every number in the report traces to an output file;
    - each acceptance criterion is explicitly evaluated pass/fail;
    - limitations are noted.
+   - **Self-contained:** the report is understandable on its own, without
+     opening any code, config, or other document. No section defers
+     understanding to an external file (e.g. "see train.py" / "refer to the
+     tech design") in place of explaining. Cited files are evidence for
+     claims already spelled out in the report.
+   - **Sufficient depth (no placeholders):** every section holds real content,
+     not template hints. Specifically: Data shows real sample rows inline and
+     the split sizes; Model gives pseudo code, formulas with symbols defined,
+     and every prompt verbatim; Experiment History has a filled table plus
+     prose on what changed between runs; Error Analysis has ≥20 real cases
+     (input / ground truth / model output) with error-pattern discussion;
+     Setup shows config values inline (not just a path). Flag any section that
+     is thin, generic, or still a placeholder as Major.
 3. Render a self-contained HTML version into `docs/shared/` for the user,
    following `references/experiment-report-html.md`.
 4. Request user review (`status: awaiting_user_review`).

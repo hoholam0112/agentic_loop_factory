@@ -7,6 +7,11 @@ user. Output goes to `docs/shared/`.
 
 - Detailed but easy. Avoid hard words; use jargon only when necessary. An
   undergraduate should be able to read and understand it without effort.
+- Self-contained in content (distinct from the single-file packaging below):
+  a reader understands the whole experiment from the report alone, without
+  opening any code, config, or other document. Restate the needed context
+  (data, method, metric meanings) inline; cited files are evidence, not
+  pointers the reader must follow to understand.
 - Design like a senior frontend engineer: use HTML, CSS, and JavaScript to
   make a clean, refined report.
 - Use charts where they help: pick graphs that make the results intuitive and
