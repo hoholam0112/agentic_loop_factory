@@ -27,22 +27,29 @@ that tech design can start.
    error patterns and decide which this loop will address. This feeds the
    hypothesis and search space. If this is the first loop, note that there is
    no prior report.
-4. Propose 2-3 candidate directions for this loop with trade-offs and a
+4. Check the experiment ledger (`docs/agent/knowledge/experiment-ledger.md`) —
+   the list of every experiment already run. Confirm the proposed direction is
+   not a repeat. If it overlaps a completed experiment, state what is different
+   and why re-running is worth it (e.g. fixing a flaw in the earlier run). Read
+   the referenced report(s) when an entry looks close.
+5. Propose 2-3 candidate directions for this loop with trade-offs and a
    recommendation. Always include a free-form option for the user's own
    idea. If the chosen direction doesn't fit one loop, enter stage 0.5 —
    at most once per loop; if the scope still doesn't fit after 0.5,
    escalate instead of re-entering.
-5. Write the design doc. For every section, present the user a question with
+6. Write the design doc. For every section, present the user a question with
    2-3 options (include a free-form option for their own input). Keep the
    writing plain — detailed but easy, readable by an undergraduate.
-6. Verification gate (references/verification-gate.md). Criteria:
+7. Verification gate (references/verification-gate.md). Criteria:
    - the hypothesis is falsifiable;
    - the evaluation method can actually measure the acceptance criteria;
    - the data section matches the real data (checked against code/files);
    - the scope is achievable in one loop;
    - the prior error review reflects the previous loop's actual report (or
-     notes that this is the first loop).
-7. Request user review (`status: awaiting_user_review`); revise until
+     notes that this is the first loop);
+   - the experiment is not a duplicate of a ledger entry, or the design says
+     what differs and why re-running is justified.
+8. Request user review (`status: awaiting_user_review`); revise until
    approved.
 
 **Done when:** user approves the doc. Set state to stage 2.

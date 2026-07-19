@@ -23,6 +23,13 @@ Review `docs/agent/loops/<loop-id>/` for anything worth keeping beyond this
 loop. Promote persistent learnings into `docs/agent/knowledge/` and decision
 records into `docs/agent/decisions/`; leave the rest for garbage collection.
 
+Append this loop's experiments to the experiment ledger
+(`docs/agent/knowledge/experiment-ledger.md`): one short row per experiment run
+this loop (a loop with several variants gets several rows) — loop id,
+hypothesis, key setup, key result, outcome — citing this loop's report. Keep
+cells short; detail stays in the report. This keeps the ledger the single
+up-to-date index stage 1 checks to avoid repeats.
+
 ## 4. Tools & hooks review
 
 Review this loop's friction: commands typed repeatedly, mistakes a hook

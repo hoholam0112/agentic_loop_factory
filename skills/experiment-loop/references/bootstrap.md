@@ -20,7 +20,9 @@ loop can run on it.
 - Seeded `docs/agent/knowledge/` — initial knowledge documents filled from the
   existing code and docs (not just empty directories): data pipeline, dataset,
   model/architecture, evaluation setup, environment. Each claim cites its
-  source file.
+  source file. Includes `experiment-ledger.md` (from
+  `templates/experiment-ledger.md`) — start it from any experiments already run
+  before onboarding, else leave the table empty.
 - `CLAUDE.md` at the project root (English) — harness guidance for Claude Code:
   build/test/run commands, project conventions, and the communication rule
   (explain to the user in plain Korean; see SKILL.md "Plain language").
