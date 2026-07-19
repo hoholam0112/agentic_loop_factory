@@ -4,7 +4,10 @@
 in the actual codebase.
 
 **Code grounding is mandatory here:** read every module the design touches
-before writing AS-IS. The AS-IS section must cite real files.
+before writing AS-IS. The AS-IS section must cite real files. Start from the
+code map (`docs/agent/knowledge/code-map.md`) to find where to look, but the
+code is the source of truth — when the map and the code disagree, trust the
+code and fix the map.
 
 ## Deliverables (both in the loop directory)
 

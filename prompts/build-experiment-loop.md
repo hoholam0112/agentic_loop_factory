@@ -41,6 +41,7 @@
 - 프로젝트 문서·코드 분석
 - 에이전틱 루프를 사용하기 위한 문서 재구조화 및 신규 문서 작성
 - LLM wiki 초기화: 구조만 만들지 않고 기존 코드·문서에서 초기 지식 문서(데이터 파이프라인·데이터셋·모델·평가 셋업·환경)를 채운다. 각 claim은 출처 파일 표기. 실험 대장(experiment-ledger.md)도 만들고, 온보딩 전에 한 실험이 있으면 채운다
+- 코드 지도(code-map.md) 작성: 코드 분석 결과를 버리지 말고 문서로 남긴다. 디렉토리 구조·진입점(데이터 준비·학습·평가)·핵심 모듈 책임·설정 위치를 실제 경로와 함께 정리. 2단계 코드 그라운딩의 출발점이 된다(단, 코드가 우선)
 - CLAUDE.md 작성: 빌드·테스트·실행 명령, 프로젝트 규칙, 소통 규칙(쉬운 한국어)
 - 필요한 MCP 서버를 찾아 사용자에게 설치를 안내한다. 직접 설치하지 않고 무엇이 왜 필요한지 알려준다
 - 사용자가 작성한 PRD가 없다면 작성하도록 가이드 제공
@@ -62,7 +63,7 @@
 
 ### 2단계. Tech Design
 - 실험 수행에 필요한 데이터 준비, 모델 학습·평가 코드를 구현하기 위한 설계.
-- Tech Design Spec 작성 (**코드 그라운딩 필수**)
+- Tech Design Spec 작성 (**코드 그라운딩 필수**. 코드 지도(code-map.md)에서 어디를 볼지 시작하되, 코드가 우선. 지도와 코드가 다르면 코드를 믿고 지도를 고친다)
   - Experiment Design Doc 기반으로 기술 스펙 정의: AS-IS / TO-BE
   - 성공조건 검증 방법 정의: Acceptance Criteria의 기술적 재정의, 코드 리뷰 방법, 테스트 방법
   - 진행상황 모니터링: 오래 걸리는 프로세스(데이터 준비·학습·평가)는 일정 간격으로 진행상황(스텝/에폭/샘플 수·핵심 지표·타임스탬프)을 로그에 남기도록 설계한다. 3단계에서 실제로 구현하고, 4단계 무진전 판정이 이 로그를 기준으로 삼는다.
@@ -96,7 +97,7 @@ LLM wiki에 대한 프롬프트를 `references`에 별도로 작성한다.
 - 프로젝트 컨텍스트 정보를 지속적으로 업데이트하고, 에이전트가 쉽게 검색·활용할 수 있도록 한다.
 - 에이전트가 작성하는 문서는 claim 단위로 source of truth를 파일 단위로 명시한다.
 - 각 단계가 끝났을때 llm-wiki를 업데이트한다.
-- 자주 쓰는 문서는 skill 디렉토리 templates에 템플릿화해 관리한다: Project Requirements Doc / Experiment Design Doc / Tech Design Spec / Task Spec / Implementation Plan / Experiment Report / Experiment Ledger
+- 자주 쓰는 문서는 skill 디렉토리 templates에 템플릿화해 관리한다: Project Requirements Doc / Experiment Design Doc / Tech Design Spec / Task Spec / Implementation Plan / Experiment Report / Experiment Ledger / Code Map
 
 ### 문서 구조화
 문서 디렉토리를 관리주체 · 사용기한 · 주제별로 적절히 분리해 구조화한다.
@@ -110,7 +111,7 @@ LLM wiki에 대한 프롬프트를 `references`에 별도로 작성한다.
 │   ├── raw/              #   사람이 직접 작성한 원본 (최고 권위). 에이전트는 편집 불가
 │
 ├── agent/                # 🤖 에이전트가 읽고 씀. 사람은 안 봄
-│   ├── knowledge/        #   여러 루프에 걸쳐 유효한 지식. 주제별 하위 디렉토리. 데이터 파이프라인·데이터셋 설명·모델/구조 노트·평가 셋업·반복되는 오류 패턴·환경 노트·실험 대장(experiment-ledger.md)·장기계획. 단일 루프 결과는 제외
+│   ├── knowledge/        #   여러 루프에 걸쳐 유효한 지식. 주제별 하위 디렉토리. 코드 지도(code-map.md)·데이터 파이프라인·데이터셋 설명·모델/구조 노트·평가 셋업·반복되는 오류 패턴·환경 노트·실험 대장(experiment-ledger.md)·장기계획. 단일 루프 결과는 제외
 │   ├── decisions/        #   결정 기록 (ADR). 중요한 선택마다 한 파일: 무엇을·왜·대안·결과. 덮어쓰지 않고 새 기록으로 대체
 │   └── loops/            #   한 루프 범위 문서 (ephemeral, GC 대상): 설계 문서·외부조사·기술 스펙·task spec·구현 계획·실험보고서·로그·state.json
 │

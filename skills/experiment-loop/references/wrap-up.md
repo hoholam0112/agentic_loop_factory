@@ -15,7 +15,9 @@ Run the wiki update procedure in `references/llm-wiki.md` (change-scope diff →
 parallel updater subagents per `docs/agent/knowledge/` subdirectory → verifier
 subagents → garden the wiki). Gardening covers where new documents go,
 restructuring `knowledge/` when a subdirectory outgrows its topic, and updating
-`index.md`/`glossary.md` for every added, moved, or deleted document.
+`index.md`/`glossary.md` for every added, moved, or deleted document. If this
+loop changed the code structure (moved files, new entry points/modules),
+refresh `docs/agent/knowledge/code-map.md`.
 
 ## 3. Promote loop-scoped content
 

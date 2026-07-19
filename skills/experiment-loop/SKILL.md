@@ -127,4 +127,5 @@ Extend fields as needed; keep these as the minimum.
 
 Use `templates/` when creating documents: `prd.md`,
 `experiment-design-doc.md`, `tech-design-spec.md`, `task-spec.md`,
-`implementation-plan.md`, `experiment-report.md`, `experiment-ledger.md`.
+`implementation-plan.md`, `experiment-report.md`, `experiment-ledger.md`,
+`code-map.md`.
