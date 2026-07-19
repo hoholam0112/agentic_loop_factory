@@ -15,32 +15,50 @@ context current and easy for agents to search and reuse across loops.
 
 ## Layout — what goes where
 
-- `docs/agent/knowledge/` — persistent facts that stay true across loops,
-  grouped by topic into subdirectories. Contents: the code map
-  (`code-map.md` — where code lives and where to look to change something),
-  the artifact map (`artifact-map.md` — checkpoints, datasets, run outputs and
-  whether to keep them), how the data pipeline works, dataset descriptions,
-  model/architecture notes, the evaluation setup, recurring error patterns,
-  environment/infra notes, the experiment ledger (`experiment-ledger.md` —
-  every experiment run so far, one row each), and the long-term plan
-  (`long-term-plan.md`) if one exists. NOT single-loop results or decisions.
-  One file per topic; update it in place as the project changes.
-- `docs/agent/decisions/` — decision records (ADR), one file per significant
-  choice: what was decided, why, alternatives considered, consequences.
-  Examples: "why LoRA rank 16", "why dataset X was dropped". Append-only —
-  record a new ADR that supersedes an old one rather than rewriting history.
-- `docs/agent/loops/<loop-id>/` — everything scoped to a single loop,
-  ephemeral (GC target): `experiment-design.md`, external-research findings,
-  `tech-design-spec.md`, task specs, `implementation-plan.md`,
-  `experiment-report.md`, logs, and `state.json`. Consumed within the loop;
-  at wrap-up its lasting parts are promoted to `knowledge/` or `decisions/`
-  and the rest is collected.
+The top-level split is by subject: `knowledge/` is about the **project**;
+`guidance/` is about **how the agent should work**.
+
+- `docs/agent/knowledge/` — everything about the project, grouped by topic into
+  subdirectories. Contents: the code map (`code-map.md` — where code lives and
+  where to look to change something), the artifact map (`artifact-map.md` —
+  checkpoints, datasets, run outputs and whether to keep them), the experiment
+  ledger (`experiment-ledger.md` — every experiment run so far, one row each),
+  how the data pipeline works, dataset descriptions, model/architecture notes,
+  the evaluation setup, recurring error patterns, environment/infra notes, and
+  the long-term plan (`long-term-plan.md`) if one exists. These hold the CURRENT
+  TRUE STATE — update them in place as the project changes.
+  - `docs/agent/knowledge/decisions/` — decision records (ADR), one file per
+    significant choice: what was decided, why, alternatives, consequences.
+    Examples: "why LoRA rank 16", "why dataset X was dropped". These hold the
+    WHY (past-tense). Written at wrap-up by distilling the loop log. Append-only
+    — record a new ADR that supersedes an old one rather than rewriting history.
+- `docs/agent/guidance/` — how the agent should work. `human-feedback.md`:
+  corrections and preferences the human stated, read before every stage's work,
+  updated at wrap-up from the loop log.
+- `docs/agent/loops/<loop-id>/` — one directory per loop. Its record documents
+  (`experiment-design.md`, external-research findings, `tech-design-spec.md`,
+  task specs, `implementation-plan.md`, `experiment-report.md`, `loop-log.md`,
+  `state.json`) are KEPT — the ledger and maps cite them and later loops read
+  them. Only scratch and intermediate working files inside are GC'd. At wrap-up
+  the loop log is distilled into `knowledge/decisions/` and
+  `guidance/human-feedback.md`, and lasting facts update `knowledge/` in place.
 - `docs/shared/` — human-view outputs: the HTML experiment report, summaries.
 
-**Where does a new document go?** Persistent and reusable → `knowledge/`
-(new topic → new file/subdirectory; existing topic → append to that file).
-A choice and its rationale → `decisions/` (new ADR file). Only meaningful
-within this loop → `loops/<loop-id>/`. For humans to read → `shared/`.
+**Which bucket?** Ask two questions in order:
+1. Is it about how the *agent* should work (a correction or preference)? →
+   `guidance/human-feedback.md`.
+2. Otherwise it is about the *project*. Is it a current fact/state, or the
+   reasoning behind a past choice?
+   - Current fact/state → `knowledge/` (new topic → new file/subdirectory;
+     existing topic → update it in place). Test: if the project changes, you
+     would edit this doc.
+   - Reasoning behind a choice → `knowledge/decisions/` (new ADR, append-only).
+     Test: if the choice changes, you add a new record and leave the old one.
+
+Examples: "the model uses LoRA rank 16" → `knowledge/` (current fact);
+"why rank 16 over 32" → `knowledge/decisions/`; "always put charts in the
+report" / "explain in plain Korean" → `guidance/human-feedback.md`.
+
 Whenever you add, move, or delete a document, update `docs/index.md`.
 
 ## Update procedure (used at wrap-up)
@@ -51,14 +69,16 @@ Whenever you add, move, or delete a document, update `docs/index.md`.
 2. Dispatch one updater subagent per `docs/agent/knowledge/` subdirectory in
    parallel (Agent tool, `general-purpose` type) with the updater prompt
    below. Updaters write directly — directories are disjoint, so no conflicts.
+   Skip `knowledge/decisions/`: ADRs are append-only history, not claims to
+   re-sync against code.
 3. Dispatch one verifier subagent per updated directory with the verifier
    prompt below. The main session fixes only failed claims, then re-verifies
    the fixed claims once with a fresh verifier. If a claim still fails, delete
    it and note it in `handoff_notes` — do not loop further.
 4. Garden the wiki:
-   - Place promoted content (see wrap-up) using the "where does a new document
-     go?" rule above — new topic → new file/subdirectory under `knowledge/`,
-     existing topic → append.
+   - Place promoted content (see wrap-up) using the "Which bucket?" rule above
+     — new topic → new file/subdirectory under `knowledge/`, existing topic →
+     update in place.
    - Restructure when a `knowledge/` subdirectory has grown too large to scan
      or its topic has blurred: split or merge subdirectories so each stays a
      single clear topic. Only restructure when the need is real — do not churn

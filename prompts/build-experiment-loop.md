@@ -18,6 +18,12 @@
 - 처음부터 모든 컨텍스트를 로드하지 않고, 작업별로 필요한 컨텍스트를 점진적으로 로드한다.
 - 사용자 입력을 받으면 `glossary.md`를 읽고 용어를 align한다. 사용자가 쓴 용어의 의미가 명확하지 않으면 되묻는다.
 - `index.md`를 읽고 작업에 필요한 문서를 선택해 읽는다.
+- 각 단계 작업을 시작하기 전에 `guidance/human-feedback.md`(사람의 지적·향후 선호 기록)를 읽고 그 규칙을 지킨다.
+
+### 결정·피드백 기록
+- 루프 동안 사람이 선택하거나 프롬프트로 입력한 것(선택지 답변·지시·지적·선호)을 전부 `loops/<loop-id>/loop-log.md`에 그때그때 기록한다. 완성도보다 빠짐없이 남기는 것이 우선.
+- wrap-up에서 이 로그를 정리해 중요한 결정은 `knowledge/decisions/`(ADR)로, 앞으로 지켜야 할 지적·선호는 `guidance/human-feedback.md`로 업데이트한다.
+- (참고 시점은 위 컨텍스트 로드 참조: 각 단계 작업 전에 `guidance/human-feedback.md`를 읽는다.)
 
 ### 검증 게이트 (subagent)
 - 작업 결과물은 subagent를 이용해 검증한다.
@@ -43,6 +49,7 @@
 - LLM wiki 초기화: 구조만 만들지 않고 기존 코드·문서에서 초기 지식 문서(데이터 파이프라인·데이터셋·모델·평가 셋업·환경)를 채운다. 각 claim은 출처 파일 표기. 실험 대장(experiment-ledger.md)도 만들고, 온보딩 전에 한 실험이 있으면 채운다
 - 코드 지도(code-map.md) 작성: 코드 분석 결과를 버리지 말고 문서로 남긴다. 디렉토리 구조·진입점(데이터 준비·학습·평가)·핵심 모듈 책임·설정 위치를 실제 경로와 함께 정리. 2단계 코드 그라운딩의 출발점이 된다(단, 코드가 우선)
 - artifact 지도(artifact-map.md) 작성: 코드·문서 외 artifacts(체크포인트·데이터셋·실행 출력·그래프)의 저장 위치 관례를 파악하고, 이미 있는 artifact를 등록. artifact는 git에 없을 수 있어 이 지도가 무엇이 있는지의 기준이 된다
+- 사람 피드백 문서(guidance/human-feedback.md) 생성: 온보딩 때 사용자가 준 상시 선호가 있으면 채우고, 없으면 빈 표. 이후 모든 단계에서 작업 전 참고한다
 - CLAUDE.md 작성: 빌드·테스트·실행 명령, 프로젝트 규칙, 소통 규칙(쉬운 한국어)
 - 필요한 MCP 서버를 찾아 사용자에게 설치를 안내한다. 직접 설치하지 않고 무엇이 왜 필요한지 알려준다
 - 사용자가 작성한 PRD가 없다면 작성하도록 가이드 제공
@@ -88,6 +95,7 @@
 - garbage collection: 이번 루프로 불필요해진 코드·문서 정리. artifact는 git이 아니라 artifact 지도를 보고 정리한다 — 재현·재사용에 필요한 것(최종 체크포인트·보고서가 인용한 평가 출력·다시 만들기 비싼 데이터)은 남기고 temp는 삭제. 크거나 여러 루프가 공유하는 것은 삭제 전 사용자 확인, 삭제 시 지도 갱신
 - LLM wiki 업데이트: subagent로 업데이트·검증하며 문서 디렉토리 단위로 병렬 수행. 코드와 human-source 문서의 수정사항 기반으로 claim 단위로 효율적으로 검증·업데이트
 - 위키 정리(gardening): 새 문서를 규칙에 따라 배치(새 주제는 새 파일/디렉토리, 기존 주제는 이어쓰기)하고, knowledge 하위 디렉토리가 너무 커지거나 주제가 흐려지면 나누거나 합친다. 문서를 추가·이동·삭제할 때마다 index.md를 갱신한다. 필요할 때만 정리하고 매 루프 구조를 흔들지 않는다.
+- loop-log 정리: 루프 동안 쌓은 loop-log.md를 정리해 중요한 결정은 knowledge/decisions/(ADR)로, 앞으로 지켜야 할 지적·선호는 guidance/human-feedback.md로, 프로젝트의 현재 사실 변화는 knowledge 문서 수정으로 반영한다. loop 기록 문서는 보존하고 scratch만 정리한다
 - loops에 있는 내용중 persistant로 승격 필요한 것들 승격시키기
 - 실험 대장(experiment-ledger.md)에 이번 루프 실험을 추가한다: 실험 하나당 짧은 한 행(변형을 여러 개 돌렸으면 여러 행). loop-id·가설·주요 설정·핵심 결과·성공여부, 출처는 이번 보고서. 셀은 짧게 쓰고 자세한 건 보고서에 둔다. 대장은 훑어보는 색인이라 1단계 중복 확인이 이 대장 하나만 보면 되게 한다
 - tools & hooks 업데이트: 이번 루프 작업을 리뷰해 필요한 tools·hooks를 업데이트. 자주 쓰는 꼭 필요한 것만 만들고 과잉을 방지한다.
@@ -99,7 +107,7 @@ LLM wiki에 대한 프롬프트를 `references`에 별도로 작성한다.
 - 프로젝트 컨텍스트 정보를 지속적으로 업데이트하고, 에이전트가 쉽게 검색·활용할 수 있도록 한다.
 - 에이전트가 작성하는 문서는 claim 단위로 source of truth를 파일 단위로 명시한다.
 - 각 단계가 끝났을때 llm-wiki를 업데이트한다.
-- 자주 쓰는 문서는 skill 디렉토리 templates에 템플릿화해 관리한다: Project Requirements Doc / Experiment Design Doc / Tech Design Spec / Task Spec / Implementation Plan / Experiment Report / Experiment Ledger / Code Map / Artifact Map
+- 자주 쓰는 문서는 skill 디렉토리 templates에 템플릿화해 관리한다: Project Requirements Doc / Experiment Design Doc / Tech Design Spec / Task Spec / Implementation Plan / Experiment Report / Experiment Ledger / Code Map / Artifact Map / Decision Record / Human Feedback / Loop Log
 
 ### 문서 구조화
 문서 디렉토리를 관리주체 · 사용기한 · 주제별로 적절히 분리해 구조화한다.
@@ -113,12 +121,21 @@ LLM wiki에 대한 프롬프트를 `references`에 별도로 작성한다.
 │   ├── raw/              #   사람이 직접 작성한 원본 (최고 권위). 에이전트는 편집 불가
 │
 ├── agent/                # 🤖 에이전트가 읽고 씀. 사람은 안 봄
-│   ├── knowledge/        #   여러 루프에 걸쳐 유효한 지식. 주제별 하위 디렉토리. 코드 지도(code-map.md)·artifact 지도(artifact-map.md)·데이터 파이프라인·데이터셋 설명·모델/구조 노트·평가 셋업·반복되는 오류 패턴·환경 노트·실험 대장(experiment-ledger.md)·장기계획. 단일 루프 결과는 제외
-│   ├── decisions/        #   결정 기록 (ADR). 중요한 선택마다 한 파일: 무엇을·왜·대안·결과. 덮어쓰지 않고 새 기록으로 대체
-│   └── loops/            #   한 루프 범위 문서 (ephemeral, GC 대상): 설계 문서·외부조사·기술 스펙·task spec·구현 계획·실험보고서·로그·state.json
+│   ├── knowledge/        #   프로젝트에 관한 것. 주제별 하위 디렉토리. 코드 지도(code-map.md)·artifact 지도(artifact-map.md)·실험 대장(experiment-ledger.md)·데이터 파이프라인·데이터셋 설명·모델/구조 노트·평가 셋업·반복되는 오류 패턴·환경 노트·장기계획. 지금의 사실이라 바뀌면 그 자리에서 수정
+│   │   └── decisions/    #     결정 기록 (ADR). 선택의 이유. wrap-up에서 loop-log를 정리해 남긴다. 덮어쓰지 않고 새 기록으로 대체
+│   ├── guidance/         #   에이전트가 일하는 방식. human-feedback.md(사람의 지적·선호). 작업 전 항상 참고
+│   └── loops/            #   루프별 디렉토리. 기록 문서(설계 문서·외부조사·기술 스펙·task spec·구현 계획·실험보고서·loop-log·state.json)는 보존한다 — 대장·지도가 인용하고 다음 루프가 읽는다. 안의 scratch·중간 파일만 GC 대상. wrap-up에서 loop-log를 정리해 knowledge/decisions·guidance로 업데이트
 │
 └── shared/               # 👀 에이전트가 쓰고 사람이 봄
     └── ...               #   리포트·요약 등 human-view 산출물
+
+#### 어디에 둘지 (knowledge / decisions / guidance 구분)
+- 최상위 구분: **프로젝트에 관한 것**은 knowledge, **에이전트가 일하는 방식**은 guidance.
+- guidance = 앞으로 어떻게 일할지의 규칙(지적·선호). 예: "보고서에 그래프를 꼭 넣어라", "쉬운 한국어로 설명해라".
+- knowledge 안에서 다시:
+  - 지금의 사실·상태(무엇이 있고 어떻게 동작하는지)는 knowledge 본체. 현재형, 바뀌면 그 자리에서 수정. 예: "모델이 LoRA rank 16을 쓴다".
+  - 선택의 이유(대안·결과)는 knowledge/decisions. 과거형, 새 ADR로 대체. 예: "왜 32 대신 16을 골랐나".
+- 판별: 일하는 방식 규칙 → guidance, 지금의 사실 → knowledge, 선택의 이유 → knowledge/decisions.
 
 
 ## 주의사항

@@ -31,6 +31,10 @@ loop can run on it.
     non-code, non-doc artifacts (checkpoints, datasets, run outputs, plots).
     Record the project's artifact storage convention (where they live) and any
     artifacts that already exist; else an empty table.
+- `docs/agent/guidance/human-feedback.md` (from `templates/human-feedback.md`)
+  — log of human corrections and stated preferences, read before every stage's
+  work. Seed it with any standing preferences the user gives during onboarding;
+  else empty.
 - `CLAUDE.md` at the project root (English) — harness guidance for Claude Code:
   build/test/run commands, project conventions, and the communication rule
   (explain to the user in plain Korean; see SKILL.md "Plain language").
@@ -50,17 +54,20 @@ loop can run on it.
 3. Restructure. Classify existing docs on three axes: management subject
    (human-authored `human/raw/` vs agent-generated `agent/`), usage period
    (loop-scoped `agent/loops/` vs project-persistent `agent/knowledge/`, with
-   decision records in `agent/decisions/`), and topic. Human-view outputs go
-   in `shared/`. Group persistent wiki docs by topic into
-   `docs/agent/knowledge/` subdirectories so later stages can update them in
-   parallel. Write `glossary.md` and `CONVENTIONS.md`.
+   decision records in `agent/knowledge/decisions/` and agent working-rules in
+   `agent/guidance/`), and topic. Human-view outputs go in `shared/`. Group
+   persistent project docs by topic into `docs/agent/knowledge/` subdirectories
+   so later stages can update them in parallel. Write `glossary.md` and
+   `CONVENTIONS.md`.
 4. Seed the wiki: from the code and existing docs, write the initial
    `docs/agent/knowledge/` documents (code map, data pipeline, dataset, model,
    eval setup, environment). Write the step-1 code analysis into `code-map.md`.
    Decide where experiment artifacts are stored and record the convention plus
-   any existing artifacts in `artifact-map.md`. Ground every claim in a source
-   file. Then write `CLAUDE.md` at the project root with build/test/run
-   commands, conventions, and the plain-Korean communication rule.
+   any existing artifacts in `artifact-map.md`. Create
+   `docs/agent/guidance/human-feedback.md` (seeded with any standing
+   preferences, else empty). Ground every claim in a source file. Then write
+   `CLAUDE.md` at the project root with build/test/run commands, conventions,
+   and the plain-Korean communication rule.
 5. Identify required MCP servers for this project's work (e.g. web search for
    paper research, a Git host, a data source). List them for the user with
    why each is needed, and guide them to install — do not install yourself.

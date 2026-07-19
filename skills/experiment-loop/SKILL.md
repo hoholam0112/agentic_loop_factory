@@ -54,6 +54,17 @@ requirement doesn't fit one loop; if unsure, ask the user.
   input: read `docs/glossary.md` and align terminology (ask when a user's
   term is ambiguous), then read `docs/index.md` and open only the documents
   the task needs.
+- **Consult feedback before work.** Before starting any stage's work, read
+  `docs/agent/guidance/human-feedback.md` and honor its rules — past
+  corrections and stated preferences.
+- **Log human input during the loop; consolidate at wrap-up.** As the loop
+  runs, append every human choice (the option-questions and their answers),
+  prompt instruction, correction, and stated preference to
+  `docs/agent/loops/<loop-id>/loop-log.md` — a cheap, complete record
+  (`templates/loop-log.md`). At wrap-up, distill it: significant decisions
+  become ADRs in `docs/agent/knowledge/decisions/`
+  (`templates/decision-record.md`), and corrections/preferences worth carrying
+  forward go to `docs/agent/guidance/human-feedback.md`.
 - **Escalation.** Stop the loop, set `status: "escalated"`, record the
   question in `state.json.pending_decisions`, describe the situation to the
   user, and present 2-3 options.
@@ -86,17 +97,22 @@ docs/
   human/
     raw/                # human-authored originals (top authority; agents never edit)
   agent/                # agents read and write; humans don't read this
-    knowledge/          # persistent learnings, grouped by topic
-    decisions/          # decision records (ADR): why a choice was made
-    loops/<loop-id>/    # loop-scoped, ephemeral (GC target): design doc, spec, plan, report, state.json
+    knowledge/          # about the PROJECT, grouped by topic (code map, artifact map, experiment ledger, long-term plan, data/model/eval notes, ...)
+      decisions/        # decision records (ADR): why a choice was made
+    guidance/           # about HOW THE AGENT SHOULD WORK: human-feedback (corrections and preferences)
+    loops/<loop-id>/    # one dir per loop; its record docs (design doc, spec, plan, report, loop-log, state.json) are kept — later loops cite and read them. Only scratch/intermediate files inside are GC'd
   shared/               # agents write, humans read: reports, summaries (e.g. HTML report)
 ```
 
-The **LLM wiki** (`docs/agent/knowledge/`, with ADRs in `docs/agent/decisions/`)
-exists to keep project context current and easy for agents to search and reuse
-across loops. Its writing principles and update procedure live in
-`references/llm-wiki.md`; it is maintained at each loop's wrap-up (see
-`references/wrap-up.md`).
+The split: `knowledge/` is about the **project** (what is true, and — in
+`knowledge/decisions/` — why choices were made); `guidance/` is about **how the
+agent should work** (`human-feedback.md`).
+
+The **LLM wiki** (`docs/agent/knowledge/`, with ADRs in
+`docs/agent/knowledge/decisions/`) exists to keep project context current and
+easy for agents to search and reuse across loops. Its writing principles and
+update procedure live in `references/llm-wiki.md`; it is maintained at each
+loop's wrap-up (see `references/wrap-up.md`).
 
 `loop-id` = zero-padded sequence + slug, e.g. `003-lora-rank-sweep`.
 
@@ -128,4 +144,5 @@ Extend fields as needed; keep these as the minimum.
 Use `templates/` when creating documents: `prd.md`,
 `experiment-design-doc.md`, `tech-design-spec.md`, `task-spec.md`,
 `implementation-plan.md`, `experiment-report.md`, `experiment-ledger.md`,
-`code-map.md`, `artifact-map.md`.
+`code-map.md`, `artifact-map.md`, `decision-record.md`, `human-feedback.md`,
+`loop-log.md`.

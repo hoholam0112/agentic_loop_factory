@@ -8,7 +8,9 @@ that tech design can start.
 - New loop directory `docs/agent/loops/<loop-id>/` (`loop-id` = next
   zero-padded sequence + slug) with `state.json` initialized: stage 1,
   `in_progress`, `start_commit` set to the current commit hash (used by
-  wrap-up's change-scope diff).
+  wrap-up's change-scope diff). Also start `loop-log.md` (from
+  `templates/loop-log.md`) — appended with human choices and inputs through the
+  whole loop, distilled at wrap-up.
 - `experiment-design.md` in the loop directory, from
   `templates/experiment-design-doc.md`: problem definition / data /
   external research / prior error review / hypothesis / search space /

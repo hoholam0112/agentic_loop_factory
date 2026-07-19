@@ -9,6 +9,11 @@ Identify code, configs, and docs made obsolete by this loop (superseded
 experiments, dead flags, scratch scripts). Confirm with the user before
 deleting anything this loop did not create. Commit deletions separately.
 
+Keep this loop's record documents in `docs/agent/loops/<loop-id>/` (design
+doc, spec, plan, report, state.json) — the ledger and maps cite them and later
+loops read them. GC inside a loop directory targets only scratch and
+intermediate working files, never these records.
+
 Then collect artifacts using the artifact map
 (`docs/agent/knowledge/artifact-map.md`) — not the git diff, since artifacts
 are often untracked. For each entry: keep what is needed to reproduce or reuse
@@ -29,9 +34,18 @@ refresh `docs/agent/knowledge/code-map.md`.
 
 ## 3. Promote loop-scoped content
 
-Review `docs/agent/loops/<loop-id>/` for anything worth keeping beyond this
-loop. Promote persistent learnings into `docs/agent/knowledge/` and decision
-records into `docs/agent/decisions/`; leave the rest for garbage collection.
+Consolidate the loop log (`docs/agent/loops/<loop-id>/loop-log.md`) into the
+persistent stores. Sort each important item by the "Which bucket?" rule in
+`references/llm-wiki.md`:
+- A rule about HOW the agent should work (a correction or preference to carry
+  forward) → `docs/agent/guidance/human-feedback.md`.
+- A choice about WHAT to build or run, and why → an ADR in
+  `docs/agent/knowledge/decisions/` (`templates/decision-record.md`).
+- A current fact about the project (new/changed behavior, config, data) →
+  update the relevant `docs/agent/knowledge/` doc in place.
+
+The loop's record documents (including the log) stay in place (see section 1);
+only scratch is collected.
 
 Append this loop's experiments to the experiment ledger
 (`docs/agent/knowledge/experiment-ledger.md`): one short row per experiment run
