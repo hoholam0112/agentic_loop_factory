@@ -13,7 +13,9 @@ deleting anything this loop did not create. Commit deletions separately.
 
 Run the wiki update procedure in `references/llm-wiki.md` (change-scope diff →
 parallel updater subagents per `docs/agent/knowledge/` subdirectory → verifier
-subagents → update `index.md`/`glossary.md`).
+subagents → garden the wiki). Gardening covers where new documents go,
+restructuring `knowledge/` when a subdirectory outgrows its topic, and updating
+`index.md`/`glossary.md` for every added, moved, or deleted document.
 
 ## 3. Promote loop-scoped content
 
