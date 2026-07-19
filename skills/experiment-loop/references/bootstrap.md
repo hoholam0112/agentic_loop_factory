@@ -17,9 +17,18 @@ loop can run on it.
   this file.
 - `docs/CONVENTIONS.md` — the wiki's rules: document authority (human `raw/`
   is top authority), priority when sources disagree, and the frontmatter spec.
+- Seeded `docs/agent/knowledge/` — initial knowledge documents filled from the
+  existing code and docs (not just empty directories): data pipeline, dataset,
+  model/architecture, evaluation setup, environment. Each claim cites its
+  source file.
+- `CLAUDE.md` at the project root (English) — harness guidance for Claude Code:
+  build/test/run commands, project conventions, and the communication rule
+  (explain to the user in plain Korean; see SKILL.md "Plain language").
 - A PRD in `docs/human/raw/`. If none exists, guide the user through writing one
   using `templates/prd.md`: interview them section by section — the user
   authors the content, you scribe.
+- Required MCP servers identified and the user guided to install them (see
+  procedure step 5). Bootstrap does not install them itself.
 
 ## Procedure outline (adapt as needed)
 
@@ -35,9 +44,19 @@ loop can run on it.
    in `shared/`. Group persistent wiki docs by topic into
    `docs/agent/knowledge/` subdirectories so later stages can update them in
    parallel. Write `glossary.md` and `CONVENTIONS.md`.
-4. Ensure the PRD exists. Then write `index.md` last — its presence is how
+4. Seed the wiki: from the code and existing docs, write the initial
+   `docs/agent/knowledge/` documents (data pipeline, dataset, model, eval
+   setup, environment). Ground every claim in a source file. Then write
+   `CLAUDE.md` at the project root with build/test/run commands, conventions,
+   and the plain-Korean communication rule.
+5. Identify required MCP servers for this project's work (e.g. web search for
+   paper research, a Git host, a data source). List them for the user with
+   why each is needed, and guide them to install — do not install yourself.
+   If none are needed, say so.
+6. Ensure the PRD exists. Then write `index.md` last — its presence is how
    the dashboard detects a completed onboarding, so it must not exist before
    everything else is in place.
 
-**Done when:** layout exists, `index.md` reflects it, PRD present, and the
-user confirms. Then start the first loop (stage 1).
+**Done when:** layout exists, wiki seeded, `CLAUDE.md` written, MCP servers
+handled, `index.md` reflects it, PRD present, and the user confirms. Then
+start the first loop (stage 1).
