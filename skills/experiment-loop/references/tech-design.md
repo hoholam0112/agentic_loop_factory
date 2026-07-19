@@ -12,7 +12,11 @@ before writing AS-IS. The AS-IS section must cite real files.
   - AS-IS / TO-BE, based on the Experiment Design Doc;
   - acceptance criteria restated technically — the exact command, metric,
     and threshold that decides each one;
-  - verification plan: how the code will be reviewed and tested.
+  - verification plan: how the code will be reviewed and tested;
+  - progress observability: for every long-running process (data prep,
+    training, evaluation), specify how it reports progress at a regular
+    interval — a step/epoch/sample count, a key metric, and a timestamp
+    written to its log — so a watcher can tell it is alive and advancing.
 - `implementation-plan.md` from `templates/implementation-plan.md`:
   - tasks (each specified per `templates/task-spec.md`), their order and
     dependencies, and verification checkpoints — covering implementation
@@ -25,6 +29,7 @@ before writing AS-IS. The AS-IS section must cite real files.
    - AS-IS matches the real code;
    - TO-BE is sufficient to run the designed experiment;
    - every acceptance criterion has a technical verification;
+   - every long-running process has a progress-logging plan;
    - tasks are ordered, dependency-correct, and individually testable.
 3. Request user review; revise until approved.
 

@@ -13,8 +13,9 @@
   ```
 
   Record in `state.json.jobs`: command, PID, log path, expected outputs.
-- While a job runs, poll its log periodically. If the PID is alive but the
-  log shows no progress for ~30 minutes, treat the job as stalled and
+- While a job runs, poll its log periodically. The code logs progress at a
+  regular interval (see tech design / implementation), so "no new progress
+  line for ~30 minutes" while the PID is alive means the job is stalled —
   escalate. On session resume, check whether the PID is alive and still
   matches the recorded command (PIDs get reused); if not, decide from the
   log whether it finished or failed, then continue or rerun.

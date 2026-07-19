@@ -17,6 +17,11 @@ For each task in `implementation-plan.md`:
 Run tests in the main session — the TDD cycle needs immediate feedback. Do
 not delegate the cycle to subagents.
 
+For any long-running process (data prep, training, evaluation), implement the
+progress logging the tech design requires: print a step/epoch/sample count, a
+key metric, and a timestamp at a regular interval. When you run it, confirm the
+log actually advances — this is what stage 4's stall check reads.
+
 ## Verification gate
 
 Run the gate (references/verification-gate.md) at each checkpoint the
@@ -25,6 +30,7 @@ implementation plan marks — at minimum once after all tasks. Criteria:
 - the code matches the Tech Design Spec;
 - tests actually verify the acceptance criteria rather than restating the
   implementation;
+- long-running processes emit periodic progress to their log as specified;
 - no unexplained deviations from the plan.
 
 **Done when:** all tasks complete, the full test suite passes, and the gate
