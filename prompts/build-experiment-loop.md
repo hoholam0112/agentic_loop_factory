@@ -42,6 +42,7 @@
 - 에이전틱 루프를 사용하기 위한 문서 재구조화 및 신규 문서 작성
 - LLM wiki 초기화: 구조만 만들지 않고 기존 코드·문서에서 초기 지식 문서(데이터 파이프라인·데이터셋·모델·평가 셋업·환경)를 채운다. 각 claim은 출처 파일 표기. 실험 대장(experiment-ledger.md)도 만들고, 온보딩 전에 한 실험이 있으면 채운다
 - 코드 지도(code-map.md) 작성: 코드 분석 결과를 버리지 말고 문서로 남긴다. 디렉토리 구조·진입점(데이터 준비·학습·평가)·핵심 모듈 책임·설정 위치를 실제 경로와 함께 정리. 2단계 코드 그라운딩의 출발점이 된다(단, 코드가 우선)
+- artifact 지도(artifact-map.md) 작성: 코드·문서 외 artifacts(체크포인트·데이터셋·실행 출력·그래프)의 저장 위치 관례를 파악하고, 이미 있는 artifact를 등록. artifact는 git에 없을 수 있어 이 지도가 무엇이 있는지의 기준이 된다
 - CLAUDE.md 작성: 빌드·테스트·실행 명령, 프로젝트 규칙, 소통 규칙(쉬운 한국어)
 - 필요한 MCP 서버를 찾아 사용자에게 설치를 안내한다. 직접 설치하지 않고 무엇이 왜 필요한지 알려준다
 - 사용자가 작성한 PRD가 없다면 작성하도록 가이드 제공
@@ -78,12 +79,13 @@
 
 ### 4단계. 실험
 - 실험 수행: 데이터 준비 / 학습 / 평가. 오래 걸리는 작업은 백그라운드로 돌리고 로그를 주기적으로 확인한다. PID는 살아 있는데 진행 로그가 약 30분간 갱신되지 않으면 멈춘 것으로 보고 에스컬레이션한다.
+- artifact 등록: 만들어진 주요 artifact(체크포인트·전처리 데이터·실행 출력·그래프)를 정해진 위치에 두고 artifact 지도에 등록한다(경로·종류·루프·용량·용도·보존여부·config 위치).
 - 실험 결과 보고서 작성: markdown으로 먼저 작성 후, 사용자가 보기 편하도록 html로 작성
 - subagent 검증 게이트: 모든 수치가 출력 파일로 추적되는지, acceptance criterion마다 pass/fail이 평가됐는지, 한계가 명시됐는지에 더해 **독립성**(코드·문서를 열지 않고 보고서만으로 이해되는지)과 **충분한 깊이**(자리표시자 없이 각 섹션이 실제 내용으로 채워졌는지)를 검사한다.
 - 사용자에게 리뷰 받기
 
 ### 5단계. 마무리
-- garbage collection: 이번 루프로 불필요해진 코드·문서 정리
+- garbage collection: 이번 루프로 불필요해진 코드·문서 정리. artifact는 git이 아니라 artifact 지도를 보고 정리한다 — 재현·재사용에 필요한 것(최종 체크포인트·보고서가 인용한 평가 출력·다시 만들기 비싼 데이터)은 남기고 temp는 삭제. 크거나 여러 루프가 공유하는 것은 삭제 전 사용자 확인, 삭제 시 지도 갱신
 - LLM wiki 업데이트: subagent로 업데이트·검증하며 문서 디렉토리 단위로 병렬 수행. 코드와 human-source 문서의 수정사항 기반으로 claim 단위로 효율적으로 검증·업데이트
 - 위키 정리(gardening): 새 문서를 규칙에 따라 배치(새 주제는 새 파일/디렉토리, 기존 주제는 이어쓰기)하고, knowledge 하위 디렉토리가 너무 커지거나 주제가 흐려지면 나누거나 합친다. 문서를 추가·이동·삭제할 때마다 index.md를 갱신한다. 필요할 때만 정리하고 매 루프 구조를 흔들지 않는다.
 - loops에 있는 내용중 persistant로 승격 필요한 것들 승격시키기
@@ -97,7 +99,7 @@ LLM wiki에 대한 프롬프트를 `references`에 별도로 작성한다.
 - 프로젝트 컨텍스트 정보를 지속적으로 업데이트하고, 에이전트가 쉽게 검색·활용할 수 있도록 한다.
 - 에이전트가 작성하는 문서는 claim 단위로 source of truth를 파일 단위로 명시한다.
 - 각 단계가 끝났을때 llm-wiki를 업데이트한다.
-- 자주 쓰는 문서는 skill 디렉토리 templates에 템플릿화해 관리한다: Project Requirements Doc / Experiment Design Doc / Tech Design Spec / Task Spec / Implementation Plan / Experiment Report / Experiment Ledger / Code Map
+- 자주 쓰는 문서는 skill 디렉토리 templates에 템플릿화해 관리한다: Project Requirements Doc / Experiment Design Doc / Tech Design Spec / Task Spec / Implementation Plan / Experiment Report / Experiment Ledger / Code Map / Artifact Map
 
 ### 문서 구조화
 문서 디렉토리를 관리주체 · 사용기한 · 주제별로 적절히 분리해 구조화한다.
@@ -111,7 +113,7 @@ LLM wiki에 대한 프롬프트를 `references`에 별도로 작성한다.
 │   ├── raw/              #   사람이 직접 작성한 원본 (최고 권위). 에이전트는 편집 불가
 │
 ├── agent/                # 🤖 에이전트가 읽고 씀. 사람은 안 봄
-│   ├── knowledge/        #   여러 루프에 걸쳐 유효한 지식. 주제별 하위 디렉토리. 코드 지도(code-map.md)·데이터 파이프라인·데이터셋 설명·모델/구조 노트·평가 셋업·반복되는 오류 패턴·환경 노트·실험 대장(experiment-ledger.md)·장기계획. 단일 루프 결과는 제외
+│   ├── knowledge/        #   여러 루프에 걸쳐 유효한 지식. 주제별 하위 디렉토리. 코드 지도(code-map.md)·artifact 지도(artifact-map.md)·데이터 파이프라인·데이터셋 설명·모델/구조 노트·평가 셋업·반복되는 오류 패턴·환경 노트·실험 대장(experiment-ledger.md)·장기계획. 단일 루프 결과는 제외
 │   ├── decisions/        #   결정 기록 (ADR). 중요한 선택마다 한 파일: 무엇을·왜·대안·결과. 덮어쓰지 않고 새 기록으로 대체
 │   └── loops/            #   한 루프 범위 문서 (ephemeral, GC 대상): 설계 문서·외부조사·기술 스펙·task spec·구현 계획·실험보고서·로그·state.json
 │

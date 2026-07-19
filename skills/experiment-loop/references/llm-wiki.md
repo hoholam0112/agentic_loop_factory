@@ -18,12 +18,13 @@ context current and easy for agents to search and reuse across loops.
 - `docs/agent/knowledge/` — persistent facts that stay true across loops,
   grouped by topic into subdirectories. Contents: the code map
   (`code-map.md` — where code lives and where to look to change something),
-  how the data pipeline works, dataset descriptions, model/architecture notes,
-  the evaluation setup, recurring error patterns, environment/infra notes, the
-  experiment ledger (`experiment-ledger.md` — every experiment run so far, one
-  row each), and the long-term plan (`long-term-plan.md`) if one exists. NOT
-  single-loop results or decisions. One file per topic; update it in place as
-  the project changes.
+  the artifact map (`artifact-map.md` — checkpoints, datasets, run outputs and
+  whether to keep them), how the data pipeline works, dataset descriptions,
+  model/architecture notes, the evaluation setup, recurring error patterns,
+  environment/infra notes, the experiment ledger (`experiment-ledger.md` —
+  every experiment run so far, one row each), and the long-term plan
+  (`long-term-plan.md`) if one exists. NOT single-loop results or decisions.
+  One file per topic; update it in place as the project changes.
 - `docs/agent/decisions/` — decision records (ADR), one file per significant
   choice: what was decided, why, alternatives considered, consequences.
   Examples: "why LoRA rank 16", "why dataset X was dropped". Append-only —

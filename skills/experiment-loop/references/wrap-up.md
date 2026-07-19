@@ -9,6 +9,14 @@ Identify code, configs, and docs made obsolete by this loop (superseded
 experiments, dead flags, scratch scripts). Confirm with the user before
 deleting anything this loop did not create. Commit deletions separately.
 
+Then collect artifacts using the artifact map
+(`docs/agent/knowledge/artifact-map.md`) — not the git diff, since artifacts
+are often untracked. For each entry: keep what is needed to reproduce or reuse
+(final checkpoints, eval outputs the report cites, expensive-to-rebuild
+datasets); delete `temp` ones (intermediate epochs, scratch). Confirm before
+deleting anything large or shared across loops. Update the map for every
+artifact deleted or kept.
+
 ## 2. LLM wiki update
 
 Run the wiki update procedure in `references/llm-wiki.md` (change-scope diff →

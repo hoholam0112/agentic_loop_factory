@@ -27,6 +27,10 @@ loop can run on it.
     away.
   - `experiment-ledger.md` (from `templates/experiment-ledger.md`) — start it
     from any experiments already run before onboarding, else an empty table.
+  - `artifact-map.md` (from `templates/artifact-map.md`) — registry of
+    non-code, non-doc artifacts (checkpoints, datasets, run outputs, plots).
+    Record the project's artifact storage convention (where they live) and any
+    artifacts that already exist; else an empty table.
 - `CLAUDE.md` at the project root (English) — harness guidance for Claude Code:
   build/test/run commands, project conventions, and the communication rule
   (explain to the user in plain Korean; see SKILL.md "Plain language").
@@ -53,9 +57,10 @@ loop can run on it.
 4. Seed the wiki: from the code and existing docs, write the initial
    `docs/agent/knowledge/` documents (code map, data pipeline, dataset, model,
    eval setup, environment). Write the step-1 code analysis into `code-map.md`.
-   Ground every claim in a source file. Then write `CLAUDE.md` at the project
-   root with build/test/run commands, conventions, and the plain-Korean
-   communication rule.
+   Decide where experiment artifacts are stored and record the convention plus
+   any existing artifacts in `artifact-map.md`. Ground every claim in a source
+   file. Then write `CLAUDE.md` at the project root with build/test/run
+   commands, conventions, and the plain-Korean communication rule.
 5. Identify required MCP servers for this project's work (e.g. web search for
    paper research, a Git host, a data source). List them for the user with
    why each is needed, and guide them to install — do not install yourself.

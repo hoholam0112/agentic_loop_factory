@@ -23,6 +23,11 @@
   retrying.
 - Record enough to reproduce every run: commit hash, configs, seeds, data
   versions. Keep the run config alongside its outputs.
+- Store artifacts (checkpoints, prepared datasets, run outputs, plots) in the
+  project's artifact location (see the artifact map). Register each significant
+  artifact in `docs/agent/knowledge/artifact-map.md` when produced — path,
+  type, this loop, approx size, purpose, retention (`keep`/`temp`), config
+  source. This map, not git, tracks artifacts that are too large to commit.
 
 ## Report
 
