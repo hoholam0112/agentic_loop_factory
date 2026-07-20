@@ -2,6 +2,13 @@
 
 <!--
 Writing principles:
+- Audience: a non-data-scientist. They may not know ML jargon or what an
+  evaluation metric means. On first use, explain each technical term and each
+  metric in one plain sentence — what it measures, how to read it, and what
+  counts as a good vs. bad value (e.g. "F1 (a 0-1 score balancing false alarms
+  and misses; higher is better, 1.0 is perfect)"). Prefer plain words and avoid
+  difficult ones — but do NOT force a necessary technical term into an
+  inaccurate plain word; keep the correct term and gloss it.
 - Detailed but easy, undergraduate-readable. Explain, don't just list.
 - SELF-CONTAINED. A reader must understand the whole experiment from THIS
   report alone, without opening any code, config, or other document. Do not
@@ -15,9 +22,9 @@ Writing principles:
 - No placeholders. Every section holds real content; if something is genuinely
   N/A, say so and why.
 
-This markdown feeds the HTML report (references/experiment-report-html.md); the
-sections below map to its five tabs, plus setup and acceptance-criteria for the
-verification gate.
+This markdown feeds the HTML report (see the "HTML report" section of
+references/experiment.md); the sections below map to its five tabs, plus setup
+and acceptance-criteria for the verification gate.
 -->
 
 ## Overview

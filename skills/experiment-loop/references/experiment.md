@@ -14,8 +14,8 @@ knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage
 - this loop's `experiment-design.md` — the acceptance criteria to evaluate;
 - `docs/agent/knowledge/artifact-map.md` — where artifacts are stored and what
   to register;
-- `templates/experiment-report.md` and `templates/experiment-report.html` when
-  writing the report.
+- `templates/experiment-report.md` when writing the markdown report (the HTML
+  version follows the **HTML report** section of this reference).
 
 ## Execution
 
@@ -85,29 +85,122 @@ the next check — or the next session — starts from the truth.
       The template is a floor, not a cap; adding beyond it is expected. Briefly
       say why each addition helps (one line) so the choice is deliberate, not
       decoration. Don't invent data — additions must come from the same outputs.
-2. Verification gate (references/verification-gate.md). Criteria:
+2. Verification gate (references/verification-gate.md). It checks the report
+   against the **same criteria it was written to** — the writing principles and
+   per-section requirements in `templates/experiment-report.md`, plus the
+   Template compliance principle (every section filled to depth, no
+   placeholders) — so the guidance and the gate never diverge. Flag any
+   violation by severity (e.g. an unexplained metric or unglossed term, a
+   section that defers understanding to code or another doc, a thin or
+   placeholder section → Major). Plus these checks only the gate performs:
    - every number in the report traces to an output file;
    - each acceptance criterion is explicitly evaluated pass/fail;
    - limitations are noted.
-   - **Self-contained:** the report is understandable on its own, without
-     opening any code, config, or other document. No section defers
-     understanding to an external file (e.g. "see train.py" / "refer to the
-     tech design") in place of explaining. Cited files are evidence for
-     claims already spelled out in the report.
-   - **Sufficient depth (no placeholders):** every section holds real content,
-     not template hints. Specifically: Data shows real sample rows inline and
-     the split sizes; Model gives pseudo code, formulas with symbols defined,
-     and every prompt verbatim; Experiment History has a filled table plus
-     prose on what changed between runs; Error Analysis has ≥20 real cases
-     (input / ground truth / model output) with error-pattern discussion;
-     Setup shows config values inline (not just a path). Flag any section that
-     is thin, generic, or still a placeholder as Major.
 3. Render a self-contained HTML version into `docs/shared/<loop-id>-report.html`
-   for the user: copy `templates/experiment-report.html`, fill in every `FILL`
-   marker, and follow `references/experiment-report-html.md`. Then run its
-   verification gate — open the rendered file in a browser and confirm it loads,
-   every tab shows real content, and every chart draws with real data before
-   handing it over.
+   for the user, built from this loop's real outputs — follow the **HTML report**
+   section below, then run its verification gate before handing it over.
 4. Request user review (`status: awaiting_user_review`).
+
+## HTML report
+
+A polished, self-contained HTML presentation of the markdown report, for the
+user to read. Build it directly following the guidance below. Do not copy demo
+data or a fixed example into the report — concrete placeholder numbers get left
+in by mistake and mislead the reader. Every value must come from this loop's
+real outputs and the markdown report.
+
+### Writing principles
+
+- Audience: a non-data-scientist who may not know ML jargon or evaluation
+  metrics. On first use, explain each technical term and each metric in one plain
+  sentence — what it measures, how to read it, and what a good vs. bad value is
+  (e.g. "F1 (a 0-1 score balancing false alarms and misses; higher is better)").
+  Avoid difficult words, but do NOT force a necessary technical term into an
+  inaccurate plain word — keep the correct term and gloss it.
+- Detailed but easy. Use jargon only when necessary, and gloss it the first time.
+  An undergraduate should read it without effort.
+- Self-contained in content: the reader understands the whole experiment from
+  the report alone, without opening any code, config, or other document. Restate
+  the needed context (data, method, metric meanings) inline. Cited files are
+  evidence, not pointers the reader must follow to understand.
+- Self-contained as a file: one `.html` that opens directly in a browser with no
+  install step. Inline all CSS and JS; embed any image as a data URI. No external
+  stylesheets, fonts, scripts, or CDN links — they may be blocked and the file
+  must work offline.
+- Ground every number and claim in the markdown report and its cited output
+  files. The HTML presents the markdown report; it is not a new source.
+
+### Tabs and their contents
+
+Five tabs: Overview, Data, Model, Experiment History, Error Analysis.
+
+- **Overview** — background, problem definition, headline metrics (as KPI
+  tiles), one summarizing chart, and a result summary that states each
+  acceptance criterion pass/fail.
+- **Data** — collection, preprocessing, composition (split sizes in a table),
+  and 3-5 real sample rows shown verbatim.
+- **Model** — each model/method tried, explained plainly, with pseudocode,
+  formulas (every symbol defined), and every prompt verbatim.
+- **Experiment History** — the record of experiments **across loops**, not the
+  training curve of a single run. One row per experiment/variant, covering this
+  loop's runs **and** prior loops (source: `experiment-ledger.md` and the cited
+  reports): what each tried (key config), its headline result, and outcome. A
+  chart here compares experiments to each other (e.g. a metric per variant or
+  across loops) — do **not** plot a single run's metric per epoch and call it
+  history; that belongs in the Model/Overview discussion of one run, not here.
+  Follow the table with prose on what changed between experiments and why.
+  If this is the first loop, say so and show the single row.
+- **Error Analysis** — 20-30 real cases (mix of wrong and correct), each showing
+  input, ground-truth answer, and model output at a glance, plus discussion of
+  the error patterns.
+
+### Design
+
+Design it like a senior frontend engineer, but keep it a system, not ad-hoc:
+
+- **Color**: define a small set of CSS custom properties (an accent, ok/bad, and
+  a categorical set for chart series); support light and dark via
+  `prefers-color-scheme`. Use the categorical set for series, not hand-picked hex.
+- **Type**: one system sans stack for text, one mono stack for code/prompts; a
+  small fixed size scale — don't sprinkle new sizes.
+- **Layout**: a centered column; cards and KPI tiles on a surface with a border
+  and soft shadow; consistent spacing and radius. Wrap wide tables in a
+  horizontally scrolling container so the page never scrolls sideways.
+
+### Charts (inline SVG, no library)
+
+Draw charts as hand-written inline SVG. Never add a charting library — a CDN
+link will be blocked and break the file.
+
+Pick the form by data: **bar** for comparing a metric across a few items
+(variants, loops), **line** for a trend over an ordered axis, **table** when
+exact values matter more than shape. If a chart doesn't help, use a table
+instead of forcing one. Make sure each chart's x-axis is the thing being
+compared — for Experiment History that is the experiment/variant, not epochs.
+
+### Extend for the reader
+
+The five tabs are the floor. Once they hold real content, stop and ask: *what
+would make THIS result click for the user?* Then add it — a per-slice breakdown,
+a before/after comparison, an extra table, a short callout of the one thing that
+surprised you. Judge each addition by "does this help the reader understand?",
+not by decoration — and never invent data; additions draw from the same output
+files.
+
+### HTML verification gate
+
+Run the gate (references/verification-gate.md) on the HTML before handing it to
+the user. It checks the **same criteria the HTML was built to** — every
+requirement in the Writing principles, Tabs, Design, and Charts sections above
+(audience readability, cross-loop Experiment History, per-section depth,
+self-contained file) — so guidance and gate stay one and the same. Flag any
+violation by severity. **Open the rendered file in a browser and look**; do not
+judge from the source. Plus these checks only the gate performs:
+
+- **Opens and renders**: loads with no console errors; every tab switches and
+  shows content; every chart draws with real data (no empty SVG, no leftover
+  demo numbers).
+- **Numbers trace**: every figure and chart value matches the markdown report
+  and its cited output files.
 
 **Done when:** user has reviewed the report. Set state to stage 5.

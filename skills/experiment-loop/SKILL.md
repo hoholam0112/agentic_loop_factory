@@ -143,7 +143,6 @@ Copy the matching template when creating a document — see **Template complianc
 (binding)** under Shared Principles for the rules (keep every section, fill each,
 remove all guidance markers, no placeholders). Templates: `prd.md`,
 `experiment-design-doc.md`, `tech-design-spec.md`, `task-spec.md`,
-`implementation-plan.md`, `experiment-report.md`, `experiment-report.html`,
-`experiment-ledger.md`,
+`implementation-plan.md`, `experiment-report.md`, `experiment-ledger.md`,
 `code-map.md`, `artifact-map.md`, `decision-record.md`, `human-feedback.md`,
 `loop-log.md`.
