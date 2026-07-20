@@ -9,7 +9,10 @@ context current and easy for agents to search and reuse across loops.
   it.
 - Claim-level sourcing: every claim in an agent-authored document cites its
   source of truth at the file level (and line where useful).
-- Update the wiki at the end of each stage, not only at wrap-up.
+- Update the wiki at the end of each stage, not only at wrap-up. And when the
+  user states a durable project fact or constraint, write it to its home
+  **immediately** (see SKILL.md "Capture durable facts on the spot") — do not
+  defer a must-not-forget fact to wrap-up distillation.
 - `docs/CONVENTIONS.md` governs the wiki: document authority (human `raw/` is
   top authority), priority when sources disagree, and the frontmatter spec.
 
@@ -60,6 +63,15 @@ Examples: "the model uses LoRA rank 16" → `knowledge/` (current fact);
 report" / "explain in plain Korean" → `guidance/human-feedback.md`.
 
 Whenever you add, move, or delete a document, update `docs/index.md`.
+
+**Always-read core.** `docs/index.md` marks a small set of knowledge docs as
+"always-read core" — the must-know project facts and constraints an agent needs
+before any work (e.g. what the data really is, hard limits, the current goal).
+Every stage reads these every time, not selectively (see SKILL.md "Progressive
+context loading, with an always-read core"). Keep the set small so "always read"
+stays cheap; when you capture a durable fact the agent must not forget, add its
+doc to this core in `index.md`. This is the recall half of on-the-spot capture:
+a fact written but not marked core can still be skipped.
 
 ## Update procedure (used at wrap-up)
 

@@ -6,6 +6,16 @@ If unsure whether it fits, ask the user.
 **Purpose:** break a multi-loop requirement into a sequence of loop-sized
 goals.
 
+## Must read first
+
+The **always-read core** (SKILL.md → "Progressive context loading, with an
+always-read core"): `docs/glossary.md`, `docs/index.md`, the always-read core
+knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage:
+
+- the PRD in `docs/human/raw/` — the overall requirement being decomposed;
+- `docs/agent/knowledge/long-term-plan.md` if it already exists — extend it,
+  don't restart.
+
 ## Deliverables
 
 - `docs/agent/knowledge/long-term-plan.md` (project-persistent): an ordered list of

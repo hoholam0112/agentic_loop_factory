@@ -2,6 +2,17 @@
 
 **Purpose:** implement the plan's tasks so the experiment can run.
 
+## Must read first
+
+The **always-read core** (SKILL.md → "Progressive context loading, with an
+always-read core"): `docs/glossary.md`, `docs/index.md`, the always-read core
+knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage:
+
+- this loop's `tech-design-spec.md` — what to build and how it is verified;
+- this loop's `implementation-plan.md` and its task specs — the tasks, order,
+  and checkpoints you execute;
+- `docs/agent/knowledge/code-map.md`, then the code you will change.
+
 ## Method: TDD, task by task, in plan order
 
 For each task in `implementation-plan.md`:

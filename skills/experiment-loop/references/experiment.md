@@ -2,6 +2,21 @@
 
 **Purpose:** run the experiment and report the results.
 
+## Must read first
+
+The **always-read core** (SKILL.md → "Progressive context loading, with an
+always-read core"): `docs/glossary.md`, `docs/index.md`, the always-read core
+knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage:
+
+- this loop's `tech-design-spec.md` — the exact commands, metrics, and
+  thresholds that decide each acceptance criterion, and the progress-logging
+  plan the stall check relies on;
+- this loop's `experiment-design.md` — the acceptance criteria to evaluate;
+- `docs/agent/knowledge/artifact-map.md` — where artifacts are stored and what
+  to register;
+- `templates/experiment-report.md` and `templates/experiment-report.html` when
+  writing the report.
+
 ## Execution
 
 - Steps per the tech design: data preparation → training → evaluation.

@@ -3,6 +3,20 @@
 **Purpose:** decide what this loop experiments on, and specify it well enough
 that tech design can start.
 
+## Must read first
+
+The **always-read core** (SKILL.md → "Progressive context loading, with an
+always-read core"): `docs/glossary.md`, `docs/index.md`, the always-read core
+knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage:
+
+- the previous loop's `experiment-report.md` (its Error Analysis) — what failed
+  last time; if this is the first loop, note there is none;
+- `docs/agent/knowledge/experiment-ledger.md` — every experiment already run, to
+  avoid proposing a repeat;
+- the PRD in `docs/human/raw/` and `docs/agent/knowledge/long-term-plan.md` (if
+  it exists) — what this loop should serve;
+- `docs/agent/knowledge/code-map.md` — to ground the current state in real code.
+
 ## Deliverables
 
 - New loop directory `docs/agent/loops/<loop-id>/` (`loop-id` = next

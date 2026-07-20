@@ -9,6 +9,16 @@ code map (`docs/agent/knowledge/code-map.md`) to find where to look, but the
 code is the source of truth — when the map and the code disagree, trust the
 code and fix the map.
 
+## Must read first
+
+The **always-read core** (SKILL.md → "Progressive context loading, with an
+always-read core"): `docs/glossary.md`, `docs/index.md`, the always-read core
+knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage:
+
+- this loop's `experiment-design.md` — what the design must enable;
+- `docs/agent/knowledge/code-map.md`, then **the actual code modules** the design
+  will touch (code grounding is mandatory — see above).
+
 ## Deliverables (both in the loop directory)
 
 - `tech-design-spec.md` from `templates/tech-design-spec.md`:

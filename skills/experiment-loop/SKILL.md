@@ -69,13 +69,16 @@ requirement doesn't fit one loop; if unsure, ask the user.
     meet it literally.
   This is enforced by the verification gate; a document that deviates from its
   template is a Major issue, not a stylistic one.
-- **Progressive context loading.** Don't load everything up front. On user
-  input: read `docs/glossary.md` and align terminology (ask when a user's
-  term is ambiguous), then read `docs/index.md` and open only the documents
-  the task needs.
+- **Progressive context loading, with an always-read core.** Don't load
+  everything up front, but some context is read **every time**, not "if the task
+  seems to need it" — judging need is exactly how known facts get skipped. On
+  user input, always read: `docs/glossary.md` (align terminology; ask when a
+  term is ambiguous), `docs/index.md`, and every knowledge doc `index.md` marks
+  as **always-read core** (the must-know project facts and constraints). Only
+  then open the additional documents the specific task needs.
 - **Consult feedback before work.** Before starting any stage's work, read
   `docs/agent/guidance/human-feedback.md` and honor its rules — past
-  corrections and stated preferences.
+  corrections and stated preferences. This is part of the always-read core.
 - **Log human input during the loop; consolidate at wrap-up.** As the loop
   runs, append every human choice (the option-questions and their answers),
   prompt instruction, correction, and stated preference to
@@ -84,6 +87,23 @@ requirement doesn't fit one loop; if unsure, ask the user.
   become ADRs in `docs/agent/knowledge/decisions/`
   (`templates/decision-record.md`), and corrections/preferences worth carrying
   forward go to `docs/agent/guidance/human-feedback.md`.
+- **Capture durable facts on the spot — do NOT wait for wrap-up.** The loop log
+  is a raw dump distilled later; that is too slow for a fact you must not forget.
+  The moment the user states a **durable project fact or constraint** (about the
+  data, the system, the goal, or a hard limit — anything that stays true beyond
+  this turn), write it to its wiki home **immediately** (`knowledge/` per the
+  "Which bucket?" rule in `references/llm-wiki.md`; a corrected/preferred way of
+  working → `guidance/human-feedback.md`; a term → `docs/glossary.md`), cite its
+  source, mark it always-read in `docs/index.md` if it is core, then tell the
+  user in one line where you saved it. Logging it only to the loop log does not
+  count — that is the gap that makes context get forgotten.
+- **Repeating yourself is a bug signal.** If the user tells you something you
+  should already know — restating a fact, re-explaining context, or correcting
+  the same mistake twice — treat it as proof the fact was never captured or is
+  not being read. Do not just apologize and move on: capture it to its wiki home
+  right then (per the rule above), and if it was already written, fix why it
+  wasn't read (wrong location, not marked always-read). Close the leak, not just
+  the symptom.
 - **Escalation.** Stop the loop, set `status: "escalated"`, record the
   question in `state.json.pending_decisions`, describe the situation to the
   user, and present 2-3 options.

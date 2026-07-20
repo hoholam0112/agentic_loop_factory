@@ -3,6 +3,20 @@
 **Purpose:** leave the project clean and the knowledge base current; close
 the loop.
 
+## Must read first
+
+The **always-read core** (SKILL.md → "Progressive context loading, with an
+always-read core"): `docs/glossary.md`, `docs/index.md`, the always-read core
+knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage:
+
+- this loop's `loop-log.md` — the raw record to distill into the wiki;
+- this loop's `experiment-report.md` — what the ledger row cites;
+- `docs/agent/knowledge/artifact-map.md` — to collect artifacts (not the git
+  diff);
+- `docs/agent/knowledge/experiment-ledger.md` and
+  `docs/agent/knowledge/long-term-plan.md` (if it exists) — to append/update;
+- `docs/CONVENTIONS.md` — the wiki rules the update must follow.
+
 ## 1. Garbage collection
 
 Identify code, configs, and docs made obsolete by this loop (superseded

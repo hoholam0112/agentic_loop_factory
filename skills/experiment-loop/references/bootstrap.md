@@ -6,6 +6,13 @@ does not exist.
 **Purpose:** understand the project and restructure its documentation so the
 loop can run on it.
 
+## Must read first
+
+The always-read core does not exist yet — this stage creates it. Instead, read
+the project itself before proposing any layout: the `README`, any existing docs,
+the code structure, the experiment/training entry points, and the test setup
+(procedure step 1). Read the code, not just the docs.
+
 ## Deliverables
 
 - Doc layout per SKILL.md "Project Layout", adapted to the project's existing
@@ -14,7 +21,10 @@ loop can run on it.
   (the one document where Korean is allowed).
 - `docs/index.md` — what every document is for and when an agent should read
   it, including the layout decisions made here. Later stages navigate by
-  this file.
+  this file. It also marks the **always-read core**: the small set of knowledge
+  docs holding must-know project facts and constraints that every stage reads
+  every time (see `references/llm-wiki.md` "Always-read core"). Seed this set
+  with the core facts learned during onboarding.
 - `docs/CONVENTIONS.md` — the wiki's rules: document authority (human `raw/`
   is top authority), priority when sources disagree, and the frontmatter spec.
 - Seeded `docs/agent/knowledge/` — initial knowledge documents filled from the
