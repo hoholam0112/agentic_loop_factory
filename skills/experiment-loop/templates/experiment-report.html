@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--
+  Experiment report scaffold. Copy to docs/shared/<loop-id>-report.html and fill it in.
+  Rules:
+  - Replace every FILL marker with real content: the [[FILL: ...]] tokens in the body
+    and the FILL notes inside HTML comment blocks.
+  - The verification gate fails if any "FILL" marker remains.
+  - Keep it a SINGLE self-contained file: no external CSS/JS/fonts/images. Charts are
+    hand-drawn inline SVG via the helpers at the bottom. Do NOT add a chart library.
+  - Ground every number in the markdown report and its cited output files.
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[[FILL: experiment title]] — Experiment Report</title>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #f7f8fa; --surface-2: #eef1f5;
+    --border: #e3e7ee; --text: #1f2430; --muted: #5b6472;
+    --accent: #2f6feb; --ok: #2a9d8f; --bad: #d1495b;
+    --c1:#2f6feb; --c2:#d1495b; --c3:#2a9d8f; --c4:#e9a13b; --c5:#7d5ba6; --c6:#4c7a34;
+    --radius: 10px; --gap: 20px; --maxw: 1000px;
+    --fs-h1: 1.7rem; --fs-h2: 1.25rem; --fs-h3: 1.02rem; --fs-body: 0.95rem; --fs-small: 0.82rem;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    --shadow: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#12151b; --surface:#191d25; --surface-2:#20252f; --border:#2a303b;
+      --text:#e6e9ef; --muted:#9aa4b2; --shadow:none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: var(--fs-body); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 32px 20px 80px; }
+  header.report-head { margin-bottom: 8px; }
+  header.report-head h1 { font-size: var(--fs-h1); margin: 0 0 6px; letter-spacing: -.01em; }
+  header.report-head .meta { color: var(--muted); font-size: var(--fs-small); }
+  h2 { font-size: var(--fs-h2); margin: 32px 0 12px; letter-spacing: -.01em; }
+  h3 { font-size: var(--fs-h3); margin: 22px 0 8px; }
+  p { margin: 8px 0; }
+  a { color: var(--accent); }
+  code, kbd { font-family: var(--mono); font-size: .88em; background: var(--surface-2);
+    padding: .1em .35em; border-radius: 5px; }
+  pre { font-family: var(--mono); font-size: var(--fs-small); background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px;
+    overflow-x: auto; line-height: 1.55; }
+
+  /* Tabs */
+  nav.tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--border);
+    margin: 20px 0 0; position: sticky; top: 0; background: var(--bg); z-index: 5; }
+  nav.tabs button { appearance: none; border: 0; background: none; cursor: pointer;
+    font: inherit; color: var(--muted); padding: 10px 14px; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; border-radius: 6px 6px 0 0; }
+  nav.tabs button:hover { color: var(--text); background: var(--surface); }
+  nav.tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent);
+    font-weight: 600; }
+  .panel { display: none; padding-top: 12px; }
+  .panel.active { display: block; animation: fade .18s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+  /* KPI tiles */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--gap);
+    margin: 16px 0; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; box-shadow: var(--shadow); }
+  .kpi .val { font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; }
+  .kpi .lbl { color: var(--muted); font-size: var(--fs-small); margin-top: 2px; }
+  .kpi .delta.up { color: var(--ok); } .kpi .delta.down { color: var(--bad); }
+
+  /* Cards */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 20px; box-shadow: var(--shadow); margin: 14px 0; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); margin: 12px 0; }
+  .table-scroll { overflow-x: auto; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  thead th { color: var(--muted); font-weight: 600; background: var(--surface); position: sticky; top: 41px; }
+  tbody tr:hover { background: var(--surface); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+
+  /* Badges */
+  .badge { display: inline-block; font-size: var(--fs-small); font-weight: 600; padding: 2px 9px;
+    border-radius: 999px; }
+  .badge.ok { color: #fff; background: var(--ok); }
+  .badge.bad { color: #fff; background: var(--bad); }
+
+  /* Error-case grid */
+  .cases { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--gap); }
+  .case { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 16px; box-shadow: var(--shadow); }
+  .case .row { margin: 6px 0; }
+  .case .k { display: block; color: var(--muted); font-size: var(--fs-small); margin-bottom: 2px; }
+  .case .v { white-space: pre-wrap; word-break: break-word; }
+
+  /* Charts */
+  figure.chart { margin: 16px 0; }
+  figure.chart figcaption { color: var(--muted); font-size: var(--fs-small); margin-top: 6px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 8px 0; font-size: var(--fs-small); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+  svg text { fill: var(--muted); font-family: var(--sans); }
+  .muted { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="report-head">
+    <h1>[[FILL: experiment title]]</h1>
+    <div class="meta">
+      Loop [[FILL: loop-id]] · Commit <code>[[FILL: commit hash]]</code> · [[FILL: date]]
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="overview">Overview</button>
+    <button role="tab" aria-selected="false" data-tab="data">Data</button>
+    <button role="tab" aria-selected="false" data-tab="model">Model</button>
+    <button role="tab" aria-selected="false" data-tab="history">Experiment History</button>
+    <button role="tab" aria-selected="false" data-tab="errors">Error Analysis</button>
+  </nav>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="panel active" id="overview" role="tabpanel">
+    <h2>Overview</h2>
+    <p><!-- FILL: background + problem definition in plain words, 2-4 sentences. --></p>
+
+    <div class="kpis">
+      <!-- FILL: 3-5 headline numbers. Add/remove tiles as needed. -->
+      <div class="kpi"><div class="val">[[FILL: 87.3%]]</div><div class="lbl">[[FILL: metric name]]</div>
+        <div class="delta up">[[FILL: +2.1 vs baseline]]</div></div>
+      <div class="kpi"><div class="val">[[FILL: value]]</div><div class="lbl">[[FILL: label]]</div></div>
+      <div class="kpi"><div class="val">[[FILL: value]]</div><div class="lbl">[[FILL: label]]</div></div>
+    </div>
+
+    <figure class="chart">
+      <div id="chart-overview"></div>
+      <figcaption><!-- FILL: one line on what this chart shows --></figcaption>
+    </figure>
+
+    <div class="card">
+      <h3>Result summary</h3>
+      <p><!-- FILL: what happened, whether each acceptance criterion passed, key takeaway. --></p>
+    </div>
+  </section>
+
+  <!-- ============ DATA ============ -->
+  <section class="panel" id="data" role="tabpanel">
+    <h2>Data</h2>
+    <h3>Collection &amp; preprocessing</h3>
+    <p><!-- FILL: where the data came from, how it was cleaned/prepared. --></p>
+
+    <h3>Composition</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Split</th><th class="num">Rows</th><th>Notes</th></tr></thead>
+        <tbody>
+          <!-- FILL: real split sizes -->
+          <tr><td>Train</td><td class="num">[[FILL]]</td><td>[[FILL]]</td></tr>
+          <tr><td>Validation</td><td class="num">[[FILL]]</td><td>[[FILL]]</td></tr>
+          <tr><td>Test</td><td class="num">[[FILL]]</td><td>[[FILL]]</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Sample rows</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>#</th><th>[[FILL: input col]]</th><th>[[FILL: label col]]</th></tr></thead>
+        <tbody>
+          <!-- FILL: 3-5 real sample rows, verbatim -->
+          <tr><td class="num">1</td><td>[[FILL]]</td><td>[[FILL]]</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ MODEL ============ -->
+  <section class="panel" id="model" role="tabpanel">
+    <h2>Model</h2>
+    <p><!-- FILL: one-paragraph overview of the approach(es) tried. --></p>
+
+    <h3>[[FILL: model / method name]]</h3>
+    <p><!-- FILL: how it works, in plain words. --></p>
+    <h4>Pseudocode</h4>
+    <pre>[[FILL: pseudocode]]</pre>
+    <h4>Key formula</h4>
+    <pre>[[FILL: formula with every symbol defined]]</pre>
+    <h4>Prompt (verbatim)</h4>
+    <pre>[[FILL: exact prompt text, unedited]]</pre>
+  </section>
+
+  <!-- ============ EXPERIMENT HISTORY ============ -->
+  <section class="panel" id="history" role="tabpanel">
+    <h2>Experiment History</h2>
+    <figure class="chart">
+      <div id="chart-history"></div>
+      <figcaption><!-- FILL: what the trend shows across runs --></figcaption>
+    </figure>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Run</th><th>Change</th><th class="num">[[FILL: metric]]</th><th>Notes</th></tr></thead>
+        <tbody>
+          <!-- FILL: one row per run, in order -->
+          <tr><td>[[FILL]]</td><td>[[FILL]]</td><td class="num">[[FILL]]</td><td>[[FILL]]</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><!-- FILL: prose narrative — what changed between runs and why, so it reads as a story not just numbers. --></p>
+  </section>
+
+  <!-- ============ ERROR ANALYSIS ============ -->
+  <section class="panel" id="errors" role="tabpanel">
+    <h2>Error Analysis</h2>
+    <p><!-- FILL: error patterns observed, grouped. --></p>
+    <div class="cases">
+      <!-- FILL: 20-30 real cases (mix of wrong and correct). Duplicate this block per case. -->
+      <div class="case">
+        <div class="row"><span class="k">Input</span><span class="v">[[FILL]]</span></div>
+        <div class="row"><span class="k">Ground truth</span><span class="v">[[FILL]]</span></div>
+        <div class="row"><span class="k">Model output</span><span class="v">[[FILL]]</span></div>
+        <div class="row"><span class="badge bad">wrong</span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ---- Tabs ---- */
+(function () {
+  const tabs = document.querySelectorAll('nav.tabs button');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
+    panels.forEach(p => p.classList.toggle('active', p.id === t.dataset.tab));
+  }));
+})();
+
+/* ---- Chart helpers (no library, pure inline SVG) ----
+   barChart(elId, {data:[{label,value}], unit, height})
+   lineChart(elId, {series:[{name, points:[[x,y],...]}], xlabel, ylabel, height})
+   Colors read from --c1..--c6. Both are responsive (viewBox + width:100%). */
+const PALETTE = ['--c1','--c2','--c3','--c4','--c5','--c6']
+  .map(v => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+const AXIS = getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#ccc';
+
+function svgEl(tag, attrs, text) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  return e;
+}
+function niceMax(v) { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v)));
+  const n = v / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * p; }
+
+function barChart(elId, o) {
+  const el = document.getElementById(elId); if (!el) return;
+  const data = o.data || [], W = 720, H = o.height || 300, m = {t: 16, r: 16, b: 46, l: 52};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b, max = niceMax(Math.max(...data.map(d => d.value), 0));
+  const svg = svgEl('svg', {viewBox: `0 0 ${W} ${H}`, width: '100%', role: 'img'});
+  for (let i = 0; i <= 4; i++) { const y = m.t + ih * i / 4, val = max * (1 - i / 4);
+    svg.appendChild(svgEl('line', {x1: m.l, y1: y, x2: W - m.r, y2: y, stroke: AXIS, 'stroke-width': 1}));
+    svg.appendChild(svgEl('text', {x: m.l - 8, y: y + 4, 'text-anchor': 'end', 'font-size': 11},
+      (+val.toFixed(2)).toString())); }
+  const bw = iw / data.length * 0.62, step = iw / data.length;
+  data.forEach((d, i) => { const h = ih * (d.value / max), x = m.l + step * i + (step - bw) / 2, y = m.t + ih - h;
+    svg.appendChild(svgEl('rect', {x, y, width: bw, height: Math.max(h, 0), rx: 4, fill: PALETTE[i % PALETTE.length]}));
+    svg.appendChild(svgEl('text', {x: x + bw / 2, y: y - 6, 'text-anchor': 'middle', 'font-size': 11},
+      (o.unit ? d.value + o.unit : d.value).toString()));
+    svg.appendChild(svgEl('text', {x: x + bw / 2, y: H - m.b + 18, 'text-anchor': 'middle', 'font-size': 11}, d.label)); });
+  el.innerHTML = ''; el.appendChild(svg);
+}
+
+function lineChart(elId, o) {
+  const el = document.getElementById(elId); if (!el) return;
+  const series = o.series || [], W = 720, H = o.height || 300, m = {t: 16, r: 16, b: 46, l: 52};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const xs = series.flatMap(s => s.points.map(p => p[0])), ys = series.flatMap(s => s.points.map(p => p[1]));
+  const xmin = Math.min(...xs), xmax = Math.max(...xs), ymax = niceMax(Math.max(...ys, 0)), ymin = Math.min(0, ...ys);
+  const sx = x => m.l + (xmax === xmin ? 0 : (x - xmin) / (xmax - xmin)) * iw;
+  const sy = y => m.t + ih - (ymax === ymin ? 0 : (y - ymin) / (ymax - ymin)) * ih;
+  const svg = svgEl('svg', {viewBox: `0 0 ${W} ${H}`, width: '100%', role: 'img'});
+  for (let i = 0; i <= 4; i++) { const yv = ymin + (ymax - ymin) * i / 4, y = sy(yv);
+    svg.appendChild(svgEl('line', {x1: m.l, y1: y, x2: W - m.r, y2: y, stroke: AXIS, 'stroke-width': 1}));
+    svg.appendChild(svgEl('text', {x: m.l - 8, y: y + 4, 'text-anchor': 'end', 'font-size': 11},
+      (+yv.toFixed(2)).toString())); }
+  svg.appendChild(svgEl('text', {x: m.l, y: H - 8, 'font-size': 11}, String(xmin)));
+  svg.appendChild(svgEl('text', {x: W - m.r, y: H - 8, 'text-anchor': 'end', 'font-size': 11}, String(xmax)));
+  if (o.xlabel) svg.appendChild(svgEl('text', {x: (m.l + W - m.r) / 2, y: H - 8, 'text-anchor': 'middle', 'font-size': 11}, o.xlabel));
+  series.forEach((s, si) => { const col = PALETTE[si % PALETTE.length];
+    const d = s.points.map((p, i) => (i ? 'L' : 'M') + sx(p[0]).toFixed(1) + ' ' + sy(p[1]).toFixed(1)).join(' ');
+    svg.appendChild(svgEl('path', {d, fill: 'none', stroke: col, 'stroke-width': 2}));
+    s.points.forEach(p => svg.appendChild(svgEl('circle', {cx: sx(p[0]), cy: sy(p[1]), r: 3, fill: col}))); });
+  el.innerHTML = '';
+  if (series.length > 1 || series[0]?.name) { const leg = document.createElement('div'); leg.className = 'legend';
+    series.forEach((s, si) => { const sp = document.createElement('span');
+      sp.innerHTML = `<i style="background:${PALETTE[si % PALETTE.length]}"></i>${s.name || 'series ' + (si + 1)}`;
+      leg.appendChild(sp); }); el.appendChild(leg); }
+  el.appendChild(svg);
+}
+
+/* ---- Render charts (replace demo data with real numbers from the report) ---- */
+barChart('chart-overview', {
+  /* FILL: real data */
+  data: [{label: 'baseline', value: 82.1}, {label: 'run A', value: 85.4}, {label: 'run B', value: 87.3}],
+  unit: '%'
+});
+lineChart('chart-history', {
+  /* FILL: real data */
+  series: [{name: 'val accuracy', points: [[1, 74], [2, 81], [3, 85], [4, 87]]}],
+  xlabel: 'epoch'
+});
+</script>
+</body>
+</html>

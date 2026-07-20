@@ -60,7 +60,16 @@ the next check — or the next session — starts from the truth.
 
 1. Write `experiment-report.md` in the loop directory from
    `templates/experiment-report.md`, grounded in actual outputs (metrics
-   files, logs). Cite the source file for every claim.
+   files, logs). Cite the source file for every claim. Two passes:
+   1. **Fill the floor.** Complete every mandatory section of the template to
+      the required depth — this is the non-negotiable baseline, not the goal.
+   2. **Extend for the reader.** Then stop and ask: *what would help the user
+      understand THIS experiment better?* Add whatever the standard sections
+      miss — an extra comparison, a breakdown by slice, a failure taxonomy, a
+      chart that makes a result obvious at a glance, a "what surprised us" note.
+      The template is a floor, not a cap; adding beyond it is expected. Briefly
+      say why each addition helps (one line) so the choice is deliberate, not
+      decoration. Don't invent data — additions must come from the same outputs.
 2. Verification gate (references/verification-gate.md). Criteria:
    - every number in the report traces to an output file;
    - each acceptance criterion is explicitly evaluated pass/fail;
@@ -78,8 +87,12 @@ the next check — or the next session — starts from the truth.
      (input / ground truth / model output) with error-pattern discussion;
      Setup shows config values inline (not just a path). Flag any section that
      is thin, generic, or still a placeholder as Major.
-3. Render a self-contained HTML version into `docs/shared/` for the user,
-   following `references/experiment-report-html.md`.
+3. Render a self-contained HTML version into `docs/shared/<loop-id>-report.html`
+   for the user: copy `templates/experiment-report.html`, fill in every `FILL`
+   marker, and follow `references/experiment-report-html.md`. Then run its
+   verification gate — open the rendered file in a browser and confirm it loads,
+   every tab shows real content, and every chart draws with real data before
+   handing it over.
 4. Request user review (`status: awaiting_user_review`).
 
 **Done when:** user has reviewed the report. Set state to stage 5.

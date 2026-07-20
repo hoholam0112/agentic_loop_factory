@@ -50,6 +50,25 @@ requirement doesn't fit one loop; if unsure, ask the user.
 - **Claim-level sourcing.** Every claim in an agent-authored document cites
   its source file (and line where useful). Applies to all stages — design
   docs, specs, plans, reports, and wiki alike.
+- **Template compliance (binding).** Every document in the Templates list is
+  created by **copying its template file**, not by writing freely "inspired by"
+  it. The template is a **mandatory floor, not a cap**: fill all of it, then add
+  beyond it when that serves the reader. Non-negotiable:
+  - Keep **every** section heading from the template, unrenamed and in order.
+    Do not drop, rename, merge, or reorder the required sections. You **may**
+    add extra sections, subsections, tables, or charts beyond the floor when
+    they help the reader — additions are encouraged, never penalized.
+  - Each template embeds its requirements as guidance (HTML comments, or `FILL`
+    markers in the HTML report). Replace each one with real content, then delete
+    the guidance marker. A finished document contains **no** template guidance
+    text and **no** `FILL` marker.
+  - Every section holds real content. No section may be empty, a restatement of
+    its own heading, or a placeholder. If a section is genuinely not applicable,
+    write "N/A" **and one sentence of why** — silence is not allowed.
+  - Where a template states a quantity ("at least 20-30 cases", "sample rows"),
+    meet it literally.
+  This is enforced by the verification gate; a document that deviates from its
+  template is a Major issue, not a stylistic one.
 - **Progressive context loading.** Don't load everything up front. On user
   input: read `docs/glossary.md` and align terminology (ask when a user's
   term is ambiguous), then read `docs/index.md` and open only the documents
@@ -141,8 +160,11 @@ Extend fields as needed; keep these as the minimum.
 
 ## Templates
 
-Use `templates/` when creating documents: `prd.md`,
+Copy the matching template when creating a document — see **Template compliance
+(binding)** under Shared Principles for the rules (keep every section, fill each,
+remove all guidance markers, no placeholders). Templates: `prd.md`,
 `experiment-design-doc.md`, `tech-design-spec.md`, `task-spec.md`,
-`implementation-plan.md`, `experiment-report.md`, `experiment-ledger.md`,
+`implementation-plan.md`, `experiment-report.md`, `experiment-report.html`,
+`experiment-ledger.md`,
 `code-map.md`, `artifact-map.md`, `decision-record.md`, `human-feedback.md`,
 `loop-log.md`.
