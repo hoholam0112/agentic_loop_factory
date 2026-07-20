@@ -122,61 +122,20 @@ requirement doesn't fit one loop; if unsure, ask the user.
     (write "출처를 따라갈 수 있는지", not "추적성"; "효과 큰 순서", not "레버리지 순").
   - Prefer concrete verbs over abstract nouns ("검사한다", not "검증을 수행한다").
 
-## Project Layout
+## Project Layout & Wiki
 
-Default layout. Bootstrap adapts it to existing project conventions and
-records the result in `docs/index.md`; later stages follow `index.md`, not
-this default.
-
-```
-docs/
-  index.md              # navigation for agents (agent-maintained)
-  glossary.md           # human<->agent terminology
-  CONVENTIONS.md        # wiki rules: authority, priority, frontmatter spec
-  human/
-    raw/                # human-authored originals (top authority; agents never edit)
-  agent/                # agents read and write; humans don't read this
-    knowledge/          # about the PROJECT, grouped by topic (code map, artifact map, experiment ledger, long-term plan, data/model/eval notes, ...)
-      decisions/        # decision records (ADR): why a choice was made
-    guidance/           # about HOW THE AGENT SHOULD WORK: human-feedback (corrections and preferences)
-    loops/<loop-id>/    # one dir per loop; its record docs (design doc, spec, plan, report, loop-log, state.json) are kept — later loops cite and read them. Only scratch/intermediate files inside are GC'd
-  shared/               # agents write, humans read: reports, summaries (e.g. HTML report)
-```
-
-The split: `knowledge/` is about the **project** (what is true, and — in
-`knowledge/decisions/` — why choices were made); `guidance/` is about **how the
-agent should work** (`human-feedback.md`).
-
-The **LLM wiki** (`docs/agent/knowledge/`, with ADRs in
-`docs/agent/knowledge/decisions/`) exists to keep project context current and
-easy for agents to search and reuse across loops. Its writing principles and
-update procedure live in `references/llm-wiki.md`; it is maintained at each
-loop's wrap-up (see `references/wrap-up.md`).
-
-`loop-id` = zero-padded sequence + slug, e.g. `003-lora-rank-sweep`.
+The doc layout (`docs/` tree), the `knowledge/` vs `guidance/` split, and the
+`loop-id` convention live in `references/llm-wiki.md` ("Layout — what goes
+where"). The **LLM wiki** (`docs/agent/knowledge/`, ADRs in
+`knowledge/decisions/`) keeps project context current across loops; its writing
+principles and update procedure are in the same file, and it is maintained at
+each loop's wrap-up (`references/wrap-up.md`).
 
 ## state.json
 
-`docs/agent/loops/<loop-id>/state.json` — the minimum for resume-after-interruption
-and handoff to the next loop. Update on every stage transition, escalation,
-and job start.
-
-```json
-{
-  "loop_id": "003-lora-rank-sweep",
-  "stage": 3,
-  "status": "in_progress",
-  "start_commit": "a1b2c3d",
-  "current_task": "eval harness (task 4/6)",
-  "artifacts": {"experiment_design": "docs/agent/loops/003-lora-rank-sweep/experiment-design.md"},
-  "jobs": [{"command": "python train.py ...", "pid": 12345, "log": "docs/agent/loops/003-lora-rank-sweep/logs/train.log", "outputs": "runs/003/"}],
-  "pending_decisions": [],
-  "handoff_notes": null
-}
-```
-
-`status`: `in_progress` | `awaiting_user_review` | `escalated` | `done`.
-Extend fields as needed; keep these as the minimum.
+`docs/agent/loops/<loop-id>/state.json` is the minimum for resume-after-
+interruption and handoff. Update it on every stage transition, escalation, and
+job start. Full field spec: `references/state.md`.
 
 ## Templates
 

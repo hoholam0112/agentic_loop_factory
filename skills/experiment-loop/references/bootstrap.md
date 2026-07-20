@@ -15,8 +15,8 @@ the code structure, the experiment/training entry points, and the test setup
 
 ## Deliverables
 
-- Doc layout per SKILL.md "Project Layout", adapted to the project's existing
-  conventions.
+- Doc layout per `references/llm-wiki.md` "Layout — what goes where", adapted to
+  the project's existing conventions.
 - `docs/glossary.md` — terminology used in the project and by the user
   (the one document where Korean is allowed).
 - `docs/index.md` — what every document is for and when an agent should read

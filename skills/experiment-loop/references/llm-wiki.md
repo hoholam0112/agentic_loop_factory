@@ -18,6 +18,27 @@ context current and easy for agents to search and reuse across loops.
 
 ## Layout — what goes where
 
+Default project layout. Bootstrap adapts it to existing project conventions and
+records the result in `docs/index.md`; later stages follow `index.md`, not this
+default.
+
+```
+docs/
+  index.md              # navigation for agents (agent-maintained)
+  glossary.md           # human<->agent terminology
+  CONVENTIONS.md        # wiki rules: authority, priority, frontmatter spec
+  human/
+    raw/                # human-authored originals (top authority; agents never edit)
+  agent/                # agents read and write; humans don't read this
+    knowledge/          # about the PROJECT, grouped by topic (code map, artifact map, experiment ledger, long-term plan, data/model/eval notes, ...)
+      decisions/        # decision records (ADR): why a choice was made
+    guidance/           # about HOW THE AGENT SHOULD WORK: human-feedback (corrections and preferences)
+    loops/<loop-id>/    # one dir per loop; its record docs (design doc, spec, plan, report, loop-log, state.json) are kept — later loops cite and read them. Only scratch/intermediate files inside are GC'd
+  shared/               # agents write, humans read: reports, summaries (e.g. HTML report)
+```
+
+`loop-id` = zero-padded sequence + slug, e.g. `003-lora-rank-sweep`.
+
 The top-level split is by subject: `knowledge/` is about the **project**;
 `guidance/` is about **how the agent should work**.
 
