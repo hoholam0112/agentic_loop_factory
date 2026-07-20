@@ -39,10 +39,22 @@ that tech design can start.
    idea. If the chosen direction doesn't fit one loop, enter stage 0.5 —
    at most once per loop; if the scope still doesn't fit after 0.5,
    escalate instead of re-entering.
-6. Write the design doc. For every section, present the user a question with
-   2-3 options (include a free-form option for their own input). Keep the
+6. **Design the search space with the user — don't fix it silently.** Choosing
+   a direction does NOT settle its search space; that is a set of decisions the
+   user should shape. Decompose it into: which factors to vary, the candidate
+   values/range for each, and the run budget (how many runs, how searched).
+   Then:
+   - Surface the 2-3 **highest-impact** decisions (the ones that most change
+     cost or outcome) as separate questions, each with 2-3 options, a free-form
+     option, and a clearly marked recommended default.
+   - Fill the remaining low-impact choices with recommended defaults, and state
+     one reason for each in the doc's Search Space section.
+   - Never settle a material factor, its range, or the budget on your own
+     without offering the user the choice first.
+7. Write the design doc. For every other section, present the user a question
+   with 2-3 options (include a free-form option for their own input). Keep the
    writing plain — detailed but easy, readable by an undergraduate.
-7. Verification gate (references/verification-gate.md). Criteria:
+8. Verification gate (references/verification-gate.md). Criteria:
    - the hypothesis is falsifiable;
    - the evaluation method can actually measure the acceptance criteria;
    - the data section matches the real data (checked against code/files);
@@ -50,8 +62,11 @@ that tech design can start.
    - the prior error review reflects the previous loop's actual report (or
      notes that this is the first loop);
    - the experiment is not a duplicate of a ledger entry, or the design says
-     what differs and why re-running is justified.
-8. Request user review (`status: awaiting_user_review`); revise until
+     what differs and why re-running is justified;
+   - the Search Space records which high-impact factors/ranges/budget the user
+     chose from offered options, and gives a reason for every value filled by a
+     default — no material factor was fixed silently.
+9. Request user review (`status: awaiting_user_review`); revise until
    approved.
 
 **Done when:** user approves the doc. Set state to stage 2.

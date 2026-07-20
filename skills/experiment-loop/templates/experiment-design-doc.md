@@ -28,7 +28,12 @@ necessary. An undergraduate should be able to read this without effort.
      above -->
 
 ## Search Space
-<!-- What is varied: models, hyperparameters, features — with alternatives compared -->
+<!-- The decisions behind what is varied, not just a final list. For each factor
+     (models, hyperparameters, features): the candidate values/range and why,
+     plus the run budget (how many runs, how searched). Mark which high-impact
+     choices the user picked from offered options; for any value filled by a
+     recommended default, give the reason. No material factor may be fixed
+     without having offered the user the choice first. -->
 
 ## Evaluation Method
 <!-- Metrics, baselines, protocol -->
