@@ -14,8 +14,15 @@ knowledge docs, and `docs/agent/guidance/human-feedback.md`. Plus for this stage
 - this loop's `experiment-design.md` — the acceptance criteria to evaluate;
 - `docs/agent/knowledge/artifact-map.md` — where artifacts are stored and what
   to register;
-- `templates/experiment-report.md` when writing the markdown report (the HTML
-  version follows the **HTML report** section of this reference).
+- `templates/experiment-report.md` when writing the loop markdown report (the
+  HTML version follows the **HTML rendering** section of this reference).
+
+For the project report (see the **Project report** section), also read the
+cross-loop sources: `docs/agent/knowledge/experiment-ledger.md`,
+`docs/agent/knowledge/long-term-plan.md` (if it exists), the PRD in
+`docs/human/raw/`, `docs/agent/knowledge/decisions/`, the relevant
+`docs/agent/knowledge/` topic docs (data/model/eval), and
+`templates/project-report.md`.
 
 ## Execution
 
@@ -73,6 +80,13 @@ the next check — or the next session — starts from the truth.
 
 ## Report
 
+This stage produces **two** reports, each written as markdown (the gated source)
+then rendered to HTML: the **loop report** — this loop's experiment — and the
+**project report** — the whole project across all loops. Produce both, then ask
+the user to review them together.
+
+### A. Loop report
+
 1. Write `experiment-report.md` in the loop directory from
    `templates/experiment-report.md`, grounded in actual outputs (metrics
    files, logs). Cite the source file for every claim. Two passes:
@@ -97,17 +111,53 @@ the next check — or the next session — starts from the truth.
    - each acceptance criterion is explicitly evaluated pass/fail;
    - limitations are noted.
 3. Render a self-contained HTML version into `docs/shared/<loop-id>-report.html`
-   for the user, built from this loop's real outputs — follow the **HTML report**
-   section below, then run its verification gate before handing it over.
-4. Request user review (`status: awaiting_user_review`).
+   for the user, built from this loop's real outputs — follow the **HTML
+   rendering** section below, then run its verification gate before handing over.
 
-## HTML report
+### B. Project report
 
-A polished, self-contained HTML presentation of the markdown report, for the
-user to read. Build it directly following the guidance below. Do not copy demo
-data or a fixed example into the report — concrete placeholder numbers get left
-in by mistake and mislead the reader. Every value must come from this loop's
-real outputs and the markdown report.
+The whole-project view, spanning every loop — refreshed each loop, not scoped to
+this one. A single evolving file: overwrite it so it always reflects the project
+as it stands now.
+
+4. Write/refresh `docs/agent/knowledge/project-report.md` from
+   `templates/project-report.md`, grounded in the cross-loop sources (ledger,
+   long-term plan, PRD, ADRs, knowledge topic docs, artifact map). **The ledger
+   has no row for this loop until wrap-up — take the current loop's entry from
+   the loop report you just wrote in step 1.** Same two passes as the loop
+   report: fill the floor, then extend for the reader. Every section spans all
+   loops; the Experiment Journey is the cross-loop story, not a restatement of
+   this loop.
+5. Verification gate (references/verification-gate.md), same unified pattern: it
+   checks against `templates/project-report.md`'s writing principles and
+   per-section requirements plus the Template compliance principle. Flag
+   violations by severity. Plus these checks only the gate performs:
+   - every number traces to its source (a loop's `experiment-report.md`, a
+     metrics file, or the ledger);
+   - the report genuinely spans the whole project across loops — not a copy or
+     restatement of this single loop's report (→ Major if it is).
+6. Render `docs/shared/project-report.html`, built from the project report's real
+   content — follow the **HTML rendering** section below, then run its
+   verification gate before handing over.
+
+### Then
+
+7. Request user review of **both** reports (`status: awaiting_user_review`).
+
+## HTML rendering
+
+How to render either markdown report into a polished, self-contained HTML page
+for the user. Build it directly following the guidance below. Do not copy demo
+data or a fixed example into the page — concrete placeholder numbers get left in
+by mistake and mislead the reader. Every value must come from the markdown
+report and its real outputs.
+
+Which sections become tabs depends on the report: the **loop report** uses the
+five tabs below; the **project report** presents its own template's sections
+(Executive Summary, Progress & Roadmap, Experiment Journey, Current Best & State,
+Key Decisions, Technical Details, Terms & Metrics, Next Steps) as the tabs. All
+other rules in this section — writing principles, design, charts, extend, gate —
+apply to both unchanged.
 
 ### Writing principles
 
@@ -130,9 +180,11 @@ real outputs and the markdown report.
 - Ground every number and claim in the markdown report and its cited output
   files. The HTML presents the markdown report; it is not a new source.
 
-### Tabs and their contents
+### Tabs and their contents (loop report)
 
-Five tabs: Overview, Data, Model, Experiment History, Error Analysis.
+The loop report's five tabs: Overview, Data, Model, Experiment History, Error
+Analysis. (The project report instead uses its template's sections as tabs — see
+the intro above.)
 
 - **Overview** — background, problem definition, headline metrics (as KPI
   tiles), one summarizing chart, and a result summary that states each
@@ -189,18 +241,20 @@ files.
 
 ### HTML verification gate
 
-Run the gate (references/verification-gate.md) on the HTML before handing it to
-the user. It checks the **same criteria the HTML was built to** — every
-requirement in the Writing principles, Tabs, Design, and Charts sections above
-(audience readability, cross-loop Experiment History, per-section depth,
-self-contained file) — so guidance and gate stay one and the same. Flag any
-violation by severity. **Open the rendered file in a browser and look**; do not
-judge from the source. Plus these checks only the gate performs:
+Run the gate (references/verification-gate.md) on each HTML page before handing
+it to the user. It checks the **same criteria the HTML was built to** — every
+requirement in the Writing principles, the report's tabs/sections, Design, and
+Charts (audience readability, per-section depth, self-contained file; for the
+loop report, cross-loop Experiment History; for the project report, a
+genuinely whole-project view) — so guidance and gate stay one and the same. Flag
+any violation by severity. **Open the rendered file in a browser and look**; do
+not judge from the source. Plus these checks only the gate performs:
 
 - **Opens and renders**: loads with no console errors; every tab switches and
   shows content; every chart draws with real data (no empty SVG, no leftover
   demo numbers).
-- **Numbers trace**: every figure and chart value matches the markdown report
-  and its cited output files.
+- **Numbers trace**: every figure and chart value matches the source markdown
+  report and its cited output files.
 
-**Done when:** user has reviewed the report. Set state to stage 5.
+**Done when:** user has reviewed **both** reports (loop and project). Set state
+to stage 5.

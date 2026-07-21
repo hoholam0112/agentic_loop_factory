@@ -50,7 +50,10 @@ The top-level split is by subject: `knowledge/` is about the **project**;
   how the data pipeline works, dataset descriptions, model/architecture notes,
   the evaluation setup, recurring error patterns, environment/infra notes, and
   the long-term plan (`long-term-plan.md`) if one exists. These hold the CURRENT
-  TRUE STATE — update them in place as the project changes.
+  TRUE STATE — update them in place as the project changes. Also here: the
+  whole-project report (`project-report.md`) — a reader-facing summary spanning
+  all loops, refreshed at each loop's stage 4 (its HTML render goes to
+  `docs/shared/project-report.html`).
   - `docs/agent/knowledge/decisions/` — decision records (ADR), one file per
     significant choice: what was decided, why, alternatives, consequences.
     Examples: "why LoRA rank 16", "why dataset X was dropped". These hold the
@@ -66,7 +69,9 @@ The top-level split is by subject: `knowledge/` is about the **project**;
   them. Only scratch and intermediate working files inside are GC'd. At wrap-up
   the loop log is distilled into `knowledge/decisions/` and
   `guidance/human-feedback.md`, and lasting facts update `knowledge/` in place.
-- `docs/shared/` — human-view outputs: the HTML experiment report, summaries.
+- `docs/shared/` — human-view outputs: the per-loop HTML experiment report
+  (`<loop-id>-report.html`), the whole-project HTML report
+  (`project-report.html`), summaries.
 
 **Which bucket?** Ask two questions in order:
 1. Is it about how the *agent* should work (a correction or preference)? →

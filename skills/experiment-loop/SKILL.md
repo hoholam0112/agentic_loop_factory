@@ -36,7 +36,7 @@ live in `references/` and are loaded only when entering a stage.
 | 1 experiment design | references/experiment-design.md | User approves Experiment Design Doc |
 | 2 tech design | references/tech-design.md | User approves Tech Design Spec + Implementation Plan |
 | 3 implementation | references/implementation.md | All tasks done, tests pass, gate passed |
-| 4 experiment | references/experiment.md | User reviewed Experiment Report |
+| 4 experiment | references/experiment.md | User reviewed the loop and project reports |
 | 5 wrap-up | references/wrap-up.md | GC done, wiki verified, state closed |
 
 Stages run 1→5 within a loop. Enter 0.5 from stage 1 when the user's
@@ -143,6 +143,6 @@ Copy the matching template when creating a document — see **Template complianc
 (binding)** under Shared Principles for the rules (keep every section, fill each,
 remove all guidance markers, no placeholders). Templates: `prd.md`,
 `experiment-design-doc.md`, `tech-design-spec.md`, `task-spec.md`,
-`implementation-plan.md`, `experiment-report.md`, `experiment-ledger.md`,
-`code-map.md`, `artifact-map.md`, `decision-record.md`, `human-feedback.md`,
-`loop-log.md`.
+`implementation-plan.md`, `experiment-report.md`, `project-report.md`,
+`experiment-ledger.md`, `code-map.md`, `artifact-map.md`, `decision-record.md`,
+`human-feedback.md`, `loop-log.md`.
